@@ -12,5 +12,5 @@
         android:layout_height="697dp"
         tools:layout_editor_absoluteX="4dp"
         tools:layout_editor_absoluteY="4dp"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@drawable/splash_img" />
 </androidx.constraintlayout.widget.ConstraintLayout>

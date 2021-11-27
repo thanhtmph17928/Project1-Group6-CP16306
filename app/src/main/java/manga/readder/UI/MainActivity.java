@@ -3,11 +3,23 @@ package manga.readder.UI;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.google.android.material.navigation.NavigationView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,52 +28,94 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import manga.readder.Adapter.MangaAdapter;
+import manga.readder.Fragment.FragmentBangXepHang;
+import manga.readder.Fragment.FragmentDanhSachDatLich;
+import manga.readder.Fragment.FragmentDanhSachYT;
+import manga.readder.Fragment.FragmentLichSu;
+import manga.readder.Fragment.FragmentManga;
 import manga.readder.Interface.GetManga;
 import manga.readder.Model.Manga;
 import manga.readder.R;
 import manga.readder.api.APIGetManga;
 
-public class MainActivity extends AppCompatActivity implements GetManga {
-
-    GridView gridView;
-    MangaAdapter adapter;
-    ArrayList<Manga> list;
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    DrawerLayout drawerLayout;
     EditText edSearch;
+    MangaAdapter adapter;
+    private static final int FRAGMENT_MANGA = 0;
+    private static final int FRAGMENT_BANGXEPHANG = 1;
+    private static final int FRAGMENT_LICHSU = 2;
+    private static final int FRAGMENT_DANHSACHYT = 3;
+    private static final int FRAGMENT_DANHSACHDATLICH = 4;
 
+    private int CurrentFragment = FRAGMENT_MANGA;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        init();
-        mapping();
-        setUp();
-        setClick();
-        new APIGetManga(this).execute();
-    }
-
-    private void init() {
-        list = new ArrayList<>();
-        adapter = new MangaAdapter(this, 0, list);
-
-    }
-
-    private void mapping() {
-        gridView = findViewById(R.id.gvManga);
         edSearch = findViewById(R.id.edSearch);
+        Toolbar toolbar = findViewById(R.id.toolBar);
+        setSupportActionBar(toolbar);
+        drawerLayout = findViewById(R.id.drawerlayout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.nav_drawer_open,
+                R.string.nav_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = findViewById(R.id.navView);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        replaceFragment(new FragmentManga());
+        navigationView.getMenu().findItem(R.id.nav_truyen_tranh).setChecked(true);
+        setClick();
     }
 
-    private void setUp() {
-//        list = new ArrayList<>();
-//        list.add(new Manga("http://st.imageinstant.net/data/comics/112/tobaku-datenroku-kaiji.jpg","Tobaku Datenroku Kaiji"));
-//        list.add(new Manga("http://st.imageinstant.net/data/comics/112/tobaku-datenroku-kaiji.jpg","Tobaku Datenroku Kaiji"));
-//        list.add(new Manga("http://st.imageinstant.net/data/comics/112/tobaku-datenroku-kaiji.jpg","Tobaku Datenroku Kaiji"));
-//        list.add(new Manga("http://st.imageinstant.net/data/comics/112/tobaku-datenroku-kaiji.jpg","Tobaku Datenroku Kaiji"));
-//        list.add(new Manga("http://st.imageinstant.net/data/comics/112/tobaku-datenroku-kaiji.jpg","Conan"));
-//
-//        adapter = new MangaAdapter(this,0,list);
-        gridView.setAdapter(adapter);
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if(id== R.id.nav_truyen_tranh){
+            if(CurrentFragment != FRAGMENT_MANGA){
+                replaceFragment(new FragmentManga());
+                CurrentFragment = FRAGMENT_MANGA;
+            }
+        }else if(id== R.id.nav_bang_xep_hang){
+            if(CurrentFragment != FRAGMENT_BANGXEPHANG){
+                replaceFragment(new FragmentBangXepHang());
+                CurrentFragment = FRAGMENT_BANGXEPHANG;
+            }
+        }else if(id== R.id.nav_lich_su){
+            if(CurrentFragment != FRAGMENT_LICHSU){
+                replaceFragment(new FragmentLichSu());
+                CurrentFragment = FRAGMENT_LICHSU;
+            }
+        }else if(id== R.id.nav_danh_sach_yt){
+            if(CurrentFragment != FRAGMENT_DANHSACHYT){
+                replaceFragment(new FragmentDanhSachYT());
+                CurrentFragment = FRAGMENT_DANHSACHYT;
+            }
+        }else if(id== R.id.nav_danh_sach_dat_lich){
+            if(CurrentFragment != FRAGMENT_DANHSACHDATLICH){
+                replaceFragment(new FragmentDanhSachDatLich());
+                CurrentFragment = FRAGMENT_DANHSACHDATLICH;
+            }
+        }
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }else {
+            super.onBackPressed();
+        }
+    }
+    private void replaceFragment(Fragment fragment){
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.content_frame, fragment);
+        transaction.commit();
+    }
     private void setClick() {
         edSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -80,128 +134,5 @@ public class MainActivity extends AppCompatActivity implements GetManga {
                 adapter.searchManga(s);
             }
         });
-    }
-
-    @Override
-    public void start() {
-        Toast.makeText(this, "Loading", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void finish(String data) {
-        try {
-            list.clear();
-            data = "[\n" +
-                    "  {\n" +
-                    "    \"mangaName\": \"Koujo Denka no Kateikyoushi\",\n" +
-                    "    \"linkImage\": \"http://st.imageinstant.net/data/comics/215/koujo-denka-no-kateikyoushi.jpg\"\n" +
-                    "  },\n" +
-                    "  {\n" +
-                    "    \"mangaName\": \"Hazukashigariya no Kunoichi-san\",\n" +
-                    "    \"linkImage\": \"http://st.imageinstant.net/data/comics/100/hazukashigariya-no-kunoichi-san.jpg\"\n" +
-                    "  },\n" +
-                    "  {\n" +
-                    "    \"mangaName\": \"Metamorphose no Engawa\",\n" +
-                    "    \"linkImage\": \"http://st.imageinstant.net/data/comics/2/metamorphose-no-engawa.jpg\"\n" +
-                    "  },\n" +
-                    "  {\n" +
-                    "    \"mangaName\": \"Crappy Game Hunter Challenges God-Tier Game\",\n" +
-                    "    \"linkImage\": \"http://st.imageinstant.net/data/comics/49/crappy-game-hunter-challenges-god-tier-g-9474.jpg\"\n" +
-                    "  },\n" +
-                    "  {\n" +
-                    "    \"mangaName\": \"Sợi Xích Thần\",\n" +
-                    "    \"linkImage\": \"http://st.imageinstant.net/data/comics/160/soi-xich-than.jpg\"\n" +
-                    "  },\n" +
-                    "  {\n" +
-                    "    \"mangaName\": \"Mutant Muốn Có Người Yêu\",\n" +
-                    "    \"linkImage\": \"http://st.imageinstant.net/data/comics/23/mutant-muon-co-nguoi-yeu.jpg\"\n" +
-                    "  },\n" +
-                    "  {\n" +
-                    "    \"mangaName\": \"Dị Giới Kiến Quốc Ký\",\n" +
-                    "    \"linkImage\": \"http://st.imageinstant.net/data/comics/125/di-gioi-kien-quoc-ky.jpg\"\n" +
-                    "  },\n" +
-                    "  {\n" +
-                    "    \"mangaName\": \"Mashle: Phép Thuật và Cơ Bắp\",\n" +
-                    "    \"linkImage\": \"http://st.imageinstant.net/data/comics/120/mashle-phep-thuat-va-co-bap.jpg\"\n" +
-                    "  },\n" +
-                    "  {\n" +
-                    "    \"mangaName\": \"Tobaku Datenroku Kaiji\",\n" +
-                    "    \"linkImage\": \"http://st.imageinstant.net/data/comics/112/tobaku-datenroku-kaiji.jpg\"\n" +
-                    "  },\n" +
-                    "  {\n" +
-                    "    \"mangaName\": \"Lord - Bá Vương\",\n" +
-                    "    \"linkImage\": \"http://st.imageinstant.net/data/comics/77/lord-ba-vuong.jpg\"\n" +
-                    "  },\n" +
-                    "  {\n" +
-                    "    \"mangaName\": \"Midarana Kakyou ni su kuu Mono\",\n" +
-                    "    \"linkImage\": \"http://st.imageinstant.net/data/comics/65/midarana-kakyou-ni-su-kuu-mono.jpg\"\n" +
-                    "  },\n" +
-                    "  {\n" +
-                    "    \"mangaName\": \"Kỵ Sĩ Trong Vòng Cấm\",\n" +
-                    "    \"linkImage\": \"http://st.imageinstant.net/data/comics/183/area-no-kishi.jpg\"\n" +
-                    "  },\n" +
-                    "  {\n" +
-                    "    \"mangaName\": \"Koujo Denka no Kateikyoushi\",\n" +
-                    "    \"linkImage\": \"http://st.imageinstant.net/data/comics/215/koujo-denka-no-kateikyoushi.jpg\"\n" +
-                    "  },\n" +
-                    "  {\n" +
-                    "    \"mangaName\": \"Hazukashigariya no Kunoichi-san\",\n" +
-                    "    \"linkImage\": \"http://st.imageinstant.net/data/comics/100/hazukashigariya-no-kunoichi-san.jpg\"\n" +
-                    "  },\n" +
-                    "  {\n" +
-                    "    \"mangaName\": \"Metamorphose no Engawa\",\n" +
-                    "    \"linkImage\": \"http://st.imageinstant.net/data/comics/2/metamorphose-no-engawa.jpg\"\n" +
-                    "  },\n" +
-                    "  {\n" +
-                    "    \"mangaName\": \"Crappy Game Hunter Challenges God-Tier Game\",\n" +
-                    "    \"linkImage\": \"http://st.imageinstant.net/data/comics/49/crappy-game-hunter-challenges-god-tier-g-9474.jpg\"\n" +
-                    "  },\n" +
-                    "  {\n" +
-                    "    \"mangaName\": \"Sợi Xích Thần\",\n" +
-                    "    \"linkImage\": \"http://st.imageinstant.net/data/comics/160/soi-xich-than.jpg\"\n" +
-                    "  },\n" +
-                    "  {\n" +
-                    "    \"mangaName\": \"Mutant Muốn Có Người Yêu\",\n" +
-                    "    \"linkImage\": \"http://st.imageinstant.net/data/comics/23/mutant-muon-co-nguoi-yeu.jpg\"\n" +
-                    "  },\n" +
-                    "  {\n" +
-                    "    \"mangaName\": \"Dị Giới Kiến Quốc Ký\",\n" +
-                    "    \"linkImage\": \"http://st.imageinstant.net/data/comics/125/di-gioi-kien-quoc-ky.jpg\"\n" +
-                    "  },\n" +
-                    "  {\n" +
-                    "    \"mangaName\": \"Mashle: Phép Thuật và Cơ Bắp\",\n" +
-                    "    \"linkImage\": \"http://st.imageinstant.net/data/comics/120/mashle-phep-thuat-va-co-bap.jpg\"\n" +
-                    "  },\n" +
-                    "  {\n" +
-                    "    \"mangaName\": \"Tobaku Datenroku Kaiji\",\n" +
-                    "    \"linkImage\": \"http://st.imageinstant.net/data/comics/112/tobaku-datenroku-kaiji.jpg\"\n" +
-                    "  },\n" +
-                    "  {\n" +
-                    "    \"mangaName\": \"Lord - Bá Vương\",\n" +
-                    "    \"linkImage\": \"http://st.imageinstant.net/data/comics/77/lord-ba-vuong.jpg\"\n" +
-                    "  },\n" +
-                    "  {\n" +
-                    "    \"mangaName\": \"Midarana Kakyou ni su kuu Mono\",\n" +
-                    "    \"linkImage\": \"http://st.imageinstant.net/data/comics/65/midarana-kakyou-ni-su-kuu-mono.jpg\"\n" +
-                    "  },\n" +
-                    "  {\n" +
-                    "    \"mangaName\": \"Kỵ Sĩ Trong Vòng Cấm\",\n" +
-                    "    \"linkImage\": \"http://st.imageinstant.net/data/comics/183/area-no-kishi.jpg\"\n" +
-                    "  }\n" +
-                    "]";
-            JSONArray array = new JSONArray(data);
-            for (int i = 0; i < array.length(); i++) {
-                JSONObject o = array.getJSONObject(i);
-                list.add(new Manga(o));
-                adapter = new MangaAdapter(this, 0, list);
-                gridView.setAdapter(adapter);
-            }
-        } catch (JSONException e) {
-        }
-    }
-
-    @Override
-    public void error() {
-        Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show();
     }
 }

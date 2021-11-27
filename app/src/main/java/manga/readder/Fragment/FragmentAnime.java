@@ -1,4 +1,4 @@
-package manga.readder.UI;
+package manga.readder.Fragment;
 
 import android.os.Bundle;
 
@@ -12,10 +12,10 @@ import manga.readder.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link RankFragment#newInstance} factory method to
+ * Use the {@link FragmentAnime#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RankFragment extends Fragment {
+public class FragmentAnime extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class RankFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public RankFragment() {
+    public FragmentAnime() {
         // Required empty public constructor
     }
 
@@ -39,8 +39,8 @@ public class RankFragment extends Fragment {
      * @return A new instance of fragment RankFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static RankFragment newInstance(String param1, String param2) {
-        RankFragment fragment = new RankFragment();
+    public static FragmentAnime newInstance(String param1, String param2) {
+        FragmentAnime fragment = new FragmentAnime();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

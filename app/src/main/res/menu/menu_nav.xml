@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:id="@+id/nav_truyen_tranh" android:title="Truyện tranh"/>
+    <item android:id="@+id/nav_bang_xep_hang" android:title="Bảng xếp hạng"/>
+    <item android:id="@+id/nav_lich_su" android:title="Lịch sử xem"/>
+    <item android:id="@+id/nav_danh_sach_yt" android:title="Danh sách yêu thích"/>
+    <item android:id="@+id/nav_danh_sach_dat_lich" android:title="Danh sách đặt lịch"/>
+
+</menu>
