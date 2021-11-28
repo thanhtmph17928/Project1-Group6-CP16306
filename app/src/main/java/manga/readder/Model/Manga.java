@@ -14,6 +14,7 @@ public class Manga implements Serializable {
     private String theLoai;
     private String soChap;
     private String ngay;
+    private String luotXem;
 
     public Manga() {
     }
@@ -27,9 +28,10 @@ public class Manga implements Serializable {
         theLoai = o.getString("theLoai");
         soChap = o.getString("soChap");
         ngay = o.getString("ngay");
+        luotXem = o.getString("luotXem");
     }
 
-    public Manga(String id, String tenTruyen, String anh, String nguon, String tacGia, String theLoai, String soChap, String ngay) {
+    public Manga(String id, String tenTruyen, String anh, String nguon, String tacGia, String theLoai, String soChap, String ngay, String luotXem) {
         this.id = id;
         this.tenTruyen = tenTruyen;
         this.anh = anh;
@@ -38,6 +40,7 @@ public class Manga implements Serializable {
         this.theLoai = theLoai;
         this.soChap = soChap;
         this.ngay = ngay;
+        this.luotXem = luotXem;
     }
 
     public String getId() {
@@ -102,5 +105,13 @@ public class Manga implements Serializable {
 
     public void setNgay(String ngay) {
         this.ngay = ngay;
+    }
+
+    public String getLuotXem() {
+        return luotXem;
+    }
+
+    public void setLuotXem(String luotXem) {
+        this.luotXem = luotXem;
     }
 }

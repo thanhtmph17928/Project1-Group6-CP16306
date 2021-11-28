@@ -14,8 +14,6 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 
-import manga.readder.Activity.User;
-import manga.readder.Activity.UserAdapter;
 import manga.readder.Model.Manga;
 import manga.readder.R;
 

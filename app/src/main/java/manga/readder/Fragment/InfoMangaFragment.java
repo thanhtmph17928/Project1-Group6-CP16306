@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,11 +24,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import manga.readder.Activity.MainActivity;
-//import manga.readder.Adapter.ChapterAdapter;
-import manga.readder.Activity.User;
+import manga.readder.Activity.MainActivity;;
 import manga.readder.Adapter.InfoMangaAdapter;
-import manga.readder.Adapter.MangaAdapter;
+import manga.readder.DB.YeuThichDAO;
 import manga.readder.Interface.GetChapter;
 import manga.readder.Model.Chapter;
 import manga.readder.Model.Manga;
@@ -45,6 +44,8 @@ public class InfoMangaFragment extends Fragment implements GetChapter {
     InfoMangaAdapter adapter;
     Chapter chapter;
     Manga manga;
+    Button btnYeuThich,btnDatLich;
+    YeuThichDAO yeuThichDAO;
 
 
     @Override
@@ -62,6 +63,9 @@ public class InfoMangaFragment extends Fragment implements GetChapter {
         tvTheLoai = view.findViewById(R.id.tvTheLoai);
         tvSoChap = view.findViewById(R.id.tvSoChap);
         listView = view.findViewById(R.id.lvChap);
+        btnYeuThich = view.findViewById(R.id.btnYeuThich);
+        btnDatLich = view.findViewById(R.id.btnDatLich);
+        yeuThichDAO = new YeuThichDAO(getContext());
 
 
 
@@ -76,7 +80,6 @@ public class InfoMangaFragment extends Fragment implements GetChapter {
                 tvTheLoai.setText("Thể loại:"+manga.getTheLoai());
                 tvSoChap.setText("Số chap: "+manga.getSoChap());
                 Glide.with(getContext()).load(manga.getAnh()).into(imgAnh);
-                int soChapter = Integer.parseInt(manga.getSoChap());
                 listChap = new ArrayList<>();
                 adapter = new InfoMangaAdapter(getActivity(),0,listChap);
                 listView.setAdapter(adapter);
@@ -84,9 +87,25 @@ public class InfoMangaFragment extends Fragment implements GetChapter {
                     chapter = listChap.get(position);
                     mMainActivity.readManga(chapter);
                 });
+                btnYeuThich.setOnClickListener(v -> {
+                    if (yeuThichDAO.checkExists(manga.getId())>0) {
+                        if (yeuThichDAO.insert(manga) > 0) {
+                            Toast.makeText(getContext(), "Đã thêm vào danh sách yêu thích", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    else {
+                        Toast.makeText(getContext(), "Truyện đã được thêm", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                btnDatLich.setOnClickListener(v -> {
+                    Toast.makeText(getContext(), "Đã thêm vào thông báo", Toast.LENGTH_SHORT).show();
+                });
             }
         }
         new APIGetChapter(this,manga.getId()).execute();
+
         return view;
     }
 

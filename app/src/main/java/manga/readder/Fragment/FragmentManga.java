@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 import manga.readder.Activity.MainActivity;
 import manga.readder.Adapter.MangaAdapter;
+import manga.readder.DB.LichSuDAO;
 import manga.readder.Interface.GetManga;
 import manga.readder.Model.Manga;
 import manga.readder.R;
@@ -29,6 +30,7 @@ public class FragmentManga extends Fragment implements GetManga {
     ArrayList<Manga> list;
     MainActivity mMainActivity;
     Manga manga;
+    LichSuDAO lichSuDAO;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -42,11 +44,14 @@ public class FragmentManga extends Fragment implements GetManga {
         gridView.setOnItemClickListener((parent, view1, position, id) -> {
             manga = list.get(position);
             mMainActivity.replaceFragment(manga);
+            if (lichSuDAO.insert(manga)>0){
+            }
         });
 
         return view;
     }
     private void init() {
+        lichSuDAO = new LichSuDAO(getContext());
         list = new ArrayList<>();
         mMainActivity = (MainActivity) getActivity();
 //        adapter = new MangaAdapter(getActivity(),0,list);

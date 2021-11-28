@@ -39,14 +39,7 @@ public class MainActivity extends AppCompatActivity {
     MangaAdapter adapter;
     Toolbar toolbar;
     FragmentManager manager;
-
-    private static final int FRAGMENT_MANGA = 0;
-    private static final int FRAGMENT_BANGXEPHANG = 1;
-    private static final int FRAGMENT_LICHSU = 2;
-    private static final int FRAGMENT_DANHSACHYT = 3;
-    private static final int FRAGMENT_DANHSACHDATLICH = 4;
-
-    private int CurrentFragment = FRAGMENT_MANGA;
+    ActionBarDrawerToggle toggle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,68 +47,54 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawerlayout);
         toolbar = findViewById(R.id.toolBar);
 
-        //set toolbar
         setSupportActionBar(toolbar);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
+        toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.nav_drawer_open, R.string.nav_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-//        setTitle(getResources().getString(R.string.txt_bill));
+        setTitle("Truyện tranh");
         manager = getSupportFragmentManager();
         FragmentManga fragmentManga = new FragmentManga();
         manager.beginTransaction()
                 .replace(R.id.flContent, fragmentManga)
                 .commit();
         NavigationView nv = findViewById(R.id.navView);
-
-//        mHeaderView = nv.getHeaderView(0);
-//        edUser = mHeaderView.findViewById(R.id.tvUser);
-//        Intent i = getIntent();
-//        String user = i.getStringExtra("user");
-//        librarianDAO = new LibrarianDAO(this);
-//        librarian = librarianDAO.getID(user);
-//        String userName = librarian.libName;
-//        edUser.setText("Welcome " + userName + "!");
-//
-//
-//        if (user.equalsIgnoreCase("admin")) {
-//            nv.getMenu().findItem(R.id.sub_adduser).setVisible(true);
-//        }
-
         nv.setNavigationItemSelectedListener(item -> {
             manager = getSupportFragmentManager();
             switch (item.getItemId()) {
                 case R.id.nav_truyen_tranh:
-//                    setTitle(getResources().getString(R.string.txt_bill));
+                    setTitle("Truyện tranh");
                     FragmentManga fragmentManga1 = new FragmentManga();
                     manager.beginTransaction()
                             .replace(R.id.flContent, fragmentManga1)
                             .commit();
+                    setNav();
+
                     break;
                 case R.id.nav_bang_xep_hang:
-//                    setTitle(getResources().getString(R.string.txt_book_type));
+                    setTitle("Bảng xếp hạng");
                     FragmentBangXepHang fragmentBangXepHang = new FragmentBangXepHang();
                     manager.beginTransaction()
                             .replace(R.id.flContent, fragmentBangXepHang)
                             .commit();
                     break;
                 case R.id.nav_lich_su:
-//                    setTitle(getResources().getString(R.string.txt_book));
+                    setTitle("Lịch sử ");
                     FragmentLichSu fragmentLichSu = new FragmentLichSu();
                     manager.beginTransaction()
                             .replace(R.id.flContent, fragmentLichSu)
                             .commit();
                     break;
                 case R.id.nav_danh_sach_yt:
-//                    setTitle(getResources().getString(R.string.txt_member));
+                    setTitle("Yêu thích");
                     FragmentDanhSachYT fragmentDanhSachYT = new FragmentDanhSachYT();
                     manager.beginTransaction()
                             .replace(R.id.flContent, fragmentDanhSachYT)
                             .commit();
                     break;
                 case R.id.nav_danh_sach_dat_lich:
-//                    setTitle(getResources().getString(R.string.txt_top));
+                    setTitle("Thông báo");
                     FragmentDanhSachDatLich fragmentDanhSachDatLich = new FragmentDanhSachDatLich();
                     manager.beginTransaction()
                             .replace(R.id.flContent, fragmentDanhSachDatLich)
@@ -127,6 +106,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+    }
+    private void setNav(){
+        setSupportActionBar(toolbar);
+        toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
+                R.string.nav_drawer_open, R.string.nav_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
     }
 
     @Override
@@ -143,8 +129,12 @@ public class MainActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putSerializable("obj_manga",manga);
         infoMangaFragment.setArguments(bundle);
-        transaction.replace(R.id.flContent, infoMangaFragment);
+        transaction.replace(R.id.flContent, infoMangaFragment)
+                .addToBackStack(null);
         transaction.commit();
+        setTitle(manga.getTenTruyen());
+
+
     }
     public void readManga(Chapter chapter){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -152,8 +142,10 @@ public class MainActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putSerializable("obj_chapter",chapter);
         readMangaFragment.setArguments(bundle);
-        transaction.replace(R.id.flContent, readMangaFragment);
+        transaction.replace(R.id.flContent, readMangaFragment)
+                .addToBackStack(null);
         transaction.commit();
+        setTitle(chapter.getTenChap());
     }
     private void setClick() {
 //        edSearch.addTextChangedListener(new TextWatcher() {
