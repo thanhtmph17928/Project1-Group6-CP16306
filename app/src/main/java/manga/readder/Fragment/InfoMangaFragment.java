@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -15,6 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,18 +27,24 @@ import manga.readder.Activity.MainActivity;
 //import manga.readder.Adapter.ChapterAdapter;
 import manga.readder.Activity.User;
 import manga.readder.Adapter.InfoMangaAdapter;
+import manga.readder.Adapter.MangaAdapter;
+import manga.readder.Interface.GetChapter;
 import manga.readder.Model.Chapter;
 import manga.readder.Model.Manga;
 import manga.readder.R;
+import manga.readder.api.APIGetChapter;
+import manga.readder.api.APIGetManga;
 
-public class InfoMangaFragment extends Fragment {
+public class InfoMangaFragment extends Fragment implements GetChapter {
     private View view;
     private MainActivity mMainActivity;
-    TextView tvTen,tvTieuDe,tvTacGia,tvTheLoai,tvSoChap;
+    TextView tvTen,tvTieuDe,tvTacGia,tvTheLoai,tvSoChap,tvNguon;
     ImageView imgAnh;
     ListView listView;
-    ArrayList<String> listChap;
+    ArrayList<Chapter> listChap;
     InfoMangaAdapter adapter;
+    Chapter chapter;
+    Manga manga;
 
 
     @Override
@@ -41,17 +52,12 @@ public class InfoMangaFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_info_manga, container, false);
-//        rvChap = view.findViewById(R.id.rvChap);
-//        mMainActivity = (MainActivity) getActivity();
-//        LinearLayoutManager layoutManager = new LinearLayoutManager(mMainActivity);
-//        rvChap.setLayoutManager(layoutManager);
-//        ChapterAdapter adapter = new ChapterAdapter(getListChap());
-//        rvChap.setAdapter(adapter);
-//        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(mainActivity, DividerItemDecoration.VERTICAL);
-//        rvChap.addItemDecoration(itemDecoration);
+
+        mMainActivity = (MainActivity) getActivity();
         imgAnh  = view.findViewById(R.id.imgAnh);
         tvTen = view.findViewById(R.id.tvTen);
         tvTieuDe = view.findViewById(R.id.tvTieuDe);
+        tvNguon = view.findViewById(R.id.tvNguon);
         tvTacGia = view.findViewById(R.id.tvTacGia);
         tvTheLoai = view.findViewById(R.id.tvTheLoai);
         tvSoChap = view.findViewById(R.id.tvSoChap);
@@ -61,24 +67,52 @@ public class InfoMangaFragment extends Fragment {
 
         Bundle bundleRecive = getArguments();
         if (bundleRecive!=null){
-            Manga manga = (Manga) bundleRecive.get("obj_user");
+            manga = (Manga) bundleRecive.get("obj_manga");
             if (manga!=null) {
                 tvTen.setText("Tên truyện :"+manga.getTenTruyen());
                 tvTieuDe.setText(manga.getTenTruyen());
+                tvNguon.setText(manga.getNguon());
                 tvTacGia.setText("Tác giả :"+manga.getTacGia());
                 tvTheLoai.setText("Thể loại:"+manga.getTheLoai());
                 tvSoChap.setText("Số chap: "+manga.getSoChap());
                 Glide.with(getContext()).load(manga.getAnh()).into(imgAnh);
                 int soChapter = Integer.parseInt(manga.getSoChap());
                 listChap = new ArrayList<>();
-                for (int i = 1;i<=soChapter;i++){
-                    listChap.add("Chapter "+i);
-                }
                 adapter = new InfoMangaAdapter(getActivity(),0,listChap);
                 listView.setAdapter(adapter);
+                listView.setOnItemClickListener((parent, view1, position, id) -> {
+                    chapter = listChap.get(position);
+                    mMainActivity.readManga(chapter);
+                });
             }
         }
+        new APIGetChapter(this,manga.getId()).execute();
         return view;
     }
 
+    @Override
+    public void start() {
+        Toast.makeText(getActivity(), "Loading", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void finish(String data) {
+        try {
+            listChap.clear();
+            JSONArray array = new JSONArray(data);
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject o = array.getJSONObject(i);
+                listChap.add(new Chapter(o));
+                adapter = new InfoMangaAdapter(getActivity(), 0, listChap) ;
+                listView.setAdapter(adapter);
+
+            }
+        } catch (JSONException e) {
+        }
+    }
+
+    @Override
+    public void error() {
+        Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
+    }
 }

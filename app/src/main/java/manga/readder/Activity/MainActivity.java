@@ -26,7 +26,9 @@ import manga.readder.Fragment.FragmentDanhSachYT;
 import manga.readder.Fragment.FragmentLichSu;
 import manga.readder.Fragment.FragmentManga;
 import manga.readder.Fragment.InfoMangaFragment;
+import manga.readder.Fragment.ReadMangaFragment;
 import manga.readder.Interface.GetManga;
+import manga.readder.Model.Chapter;
 import manga.readder.Model.Manga;
 import manga.readder.R;
 import manga.readder.api.APIGetManga;
@@ -119,31 +121,6 @@ public class MainActivity extends AppCompatActivity {
                             .replace(R.id.flContent, fragmentDanhSachDatLich)
                             .commit();
                     break;
-//                case R.id.sub_revenue:
-//                    setTitle(getResources().getString(R.string.txt_statistics_revenue));
-//                    RevenueFragment revenueFragment = new RevenueFragment();
-//                    manager.beginTransaction()
-//                            .replace(R.id.flContent, revenueFragment)
-//                            .commit();
-//                    break;
-//                case R.id.sub_adduser:
-//                    setTitle(getResources().getString(R.string.menu_add_user));
-//                    AddUserFragment addUserFragment = new AddUserFragment();
-//                    manager.beginTransaction()
-//                            .replace(R.id.flContent, addUserFragment)
-//                            .commit();
-//                    break;
-//                case R.id.sub_pass:
-//                    setTitle(getResources().getString(R.string.txt_change_password));
-//                    ChangePassFragment changePassFragment = new ChangePassFragment();
-//                    manager.beginTransaction()
-//                            .replace(R.id.flContent, changePassFragment)
-//                            .commit();
-//                    break;
-//                case R.id.sub_logout:
-//                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-//                    finish();
-//                    break;
             }
             drawerLayout.closeDrawers();
             return false;
@@ -164,9 +141,18 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         InfoMangaFragment infoMangaFragment = new InfoMangaFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable("obj_user",manga);
+        bundle.putSerializable("obj_manga",manga);
         infoMangaFragment.setArguments(bundle);
         transaction.replace(R.id.flContent, infoMangaFragment);
+        transaction.commit();
+    }
+    public void readManga(Chapter chapter){
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        ReadMangaFragment readMangaFragment = new ReadMangaFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("obj_chapter",chapter);
+        readMangaFragment.setArguments(bundle);
+        transaction.replace(R.id.flContent, readMangaFragment);
         transaction.commit();
     }
     private void setClick() {

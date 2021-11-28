@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import java.io.Serializable;
 
 public class Manga implements Serializable {
+    private String id;
     private String tenTruyen;
     private String anh;
     private String nguon;
@@ -18,6 +19,7 @@ public class Manga implements Serializable {
     }
 
     public Manga(JSONObject o) throws JSONException{
+        id = o.getString("id");
         tenTruyen = o.getString("tenTruyen");
         anh = o.getString("anh");
         nguon = o.getString("nguon");
@@ -27,7 +29,8 @@ public class Manga implements Serializable {
         ngay = o.getString("ngay");
     }
 
-    public Manga(String tenTruyen, String anh, String nguon, String tacGia, String theLoai, String soChap, String ngay) {
+    public Manga(String id, String tenTruyen, String anh, String nguon, String tacGia, String theLoai, String soChap, String ngay) {
+        this.id = id;
         this.tenTruyen = tenTruyen;
         this.anh = anh;
         this.nguon = nguon;
@@ -35,6 +38,14 @@ public class Manga implements Serializable {
         this.theLoai = theLoai;
         this.soChap = soChap;
         this.ngay = ngay;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTenTruyen() {
