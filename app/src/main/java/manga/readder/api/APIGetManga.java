@@ -18,12 +18,12 @@ public class APIGetManga extends AsyncTask<Void, Void, Void> {
         this.getManga = getManga;
         this.getManga.start();
     }
-
+    //https://mangareaderrecreate.000webhostapp.com/layTruyen.php
     //       http://myjson.dit.upm.es/api/bins/bnwz
     @Override
     protected Void doInBackground(Void... voids) {
         Request request = new Request.Builder()
-                .url("http://myjson.dit.upm.es/api/bins/4b97")
+                .url("https://mangareaderrecreate.000webhostapp.com/layTruyen.php")
                 .build();
         data = null;
         try {
@@ -37,7 +37,7 @@ public class APIGetManga extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPostExecute(Void aVoid) {
-        if (data != null) {
+        if (data == null) {
             this.getManga.error();
         } else {
             this.getManga.finish(data);

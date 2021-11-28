@@ -5,7 +5,7 @@
     android:id="@+id/drawerlayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.MainActivity"
+    tools:context=".Activity.MainActivity"
     tools:openDrawer="start">
 
     <LinearLayout
@@ -64,17 +64,11 @@
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
 
-
-<!--        <GridView-->
-<!--            android:id="@+id/gvManga"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_marginTop="30dp"-->
-<!--            android:numColumns="2" />-->
         <FrameLayout
-            android:id="@+id/content_frame"
+            android:id="@+id/flContent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
+
 
     </LinearLayout>
     <com.google.android.material.navigation.NavigationView

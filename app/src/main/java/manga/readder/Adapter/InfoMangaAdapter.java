@@ -9,28 +9,24 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
+import androidx.annotation.NonNull;
+
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import manga.readder.Activity.User;
-import manga.readder.Activity.UserAdapter;
+import manga.readder.Model.Chapter;
 import manga.readder.Model.Manga;
 import manga.readder.R;
 
-public class MangaAdapter extends ArrayAdapter<Manga> {
+
+public class InfoMangaAdapter extends ArrayAdapter<String> {
 
     private final Context context;
-    private final ArrayList<Manga> list;
+    private final ArrayList<String> list;
 
-//    private MangaAdapter.OnATtemClickListener mOnATtemClickListener;
-//
-//    public interface OnATtemClickListener{
-//        void onClickItemUser();
-//    }
-
-    public MangaAdapter(Context context, int resource, ArrayList<Manga> objects) {
+    public InfoMangaAdapter(Context context, int resource, ArrayList<String> objects) {
         super(context, resource, objects);
         this.context = context;
         this.list = objects;
@@ -55,15 +51,12 @@ public class MangaAdapter extends ArrayAdapter<Manga> {
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.item_manga, null);
+            convertView = inflater.inflate(R.layout.item_chap, null);
         }
         if (list.size() > 0) {
-            Manga manga = this.list.get(position);
-            TextView tvMangaName = convertView.findViewById(R.id.tvMangaName);
-            ImageView imgManga = convertView.findViewById(R.id.imgManga);
-
-            tvMangaName.setText(manga.getTenTruyen());
-            Glide.with(context).load(manga.getAnh()).into(imgManga);
+            String chapter = this.list.get(position);
+            TextView tvChap = convertView.findViewById(R.id.tvChap);
+            tvChap.setText(chapter);
         }
         return convertView;
 

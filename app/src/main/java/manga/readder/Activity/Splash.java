@@ -1,9 +1,7 @@
-package manga.readder.UI;
+package manga.readder.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import manga.readder.Fragment.FragmentManga;
-import manga.readder.Model.Manga;
 import manga.readder.R;
 
 import android.content.Intent;
