@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:layout_marginTop="20dp"
     tools:context=".Fragment.InfoMangaFragment">
 
     <LinearLayout
@@ -26,7 +27,8 @@
             <TextView
                 android:id="@+id/tvTieuDe"
                 android:layout_width="204dp"
-                android:layout_height="50dp" />
+                android:layout_height="50dp"
+                android:textSize="20dp"/>
 
             <TextView
                 android:id="@+id/tvNguon"
@@ -38,45 +40,54 @@
                 android:id="@+id/btnYeuThich"
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"
-                android:text="Yêu thích" />
+                android:text="Yêu thích"
+                android:backgroundTint="@color/black"/>
 
             <Button
                 android:id="@+id/btnDatLich"
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"
-                android:text="Đặt lịch hẹn" />
+                android:text="Đặt lịch hẹn"
+                android:backgroundTint="@color/black"/>
         </LinearLayout>
 
     </LinearLayout>
 
     <LinearLayout
+        android:layout_marginLeft="12dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="112dp"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp">
 
         <TextView
             android:id="@+id/tvTen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+
+            android:text="TextView"
+            android:textSize="17dp"/>
 
         <TextView
             android:id="@+id/tvTacGia"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="TextView"
+            android:textSize="17dp"/>
 
         <TextView
             android:id="@+id/tvTheLoai"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="TextView"
+            android:textSize="17dp"/>
 
         <TextView
             android:id="@+id/tvSoChap"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="TextView"
+            android:textSize="17dp"/>
 
     </LinearLayout>
 

@@ -18,12 +18,14 @@
         android:layout_height="80dp"
         android:gravity="center"
         android:text="Doraemon"
-        android:textSize="20dp" />
+        android:textSize="20dp"
+        android:maxLines="1"
+        android:singleLine="true"/>
 
     <TextView
         android:id="@+id/tvLuotXem"
-        android:layout_width="168dp"
-        android:layout_height="56dp"
+        android:layout_width="129dp"
+        android:layout_height="80dp"
         android:gravity="center"
         android:text="Lượt đọc:"
         android:textSize="20dp" />
