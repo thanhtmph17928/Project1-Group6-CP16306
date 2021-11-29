@@ -22,6 +22,7 @@ public class YeuThichDAO {
     //insert
     public long insert(Manga obj) {
         ContentValues values = new ContentValues();
+        values.put("idYeuThich", obj.getId());
         values.put("tenTruyen", obj.getTenTruyen());
         values.put("anh", obj.getAnh());
         values.put("nguon", obj.getNguon());
@@ -37,6 +38,7 @@ public class YeuThichDAO {
     //update
     public int update(Manga obj) {
         ContentValues values = new ContentValues();
+        values.put("idYeuThich", obj.getId());
         values.put("tenTruyen", obj.getTenTruyen());
         values.put("anh", obj.getAnh());
         values.put("nguon", obj.getNguon());

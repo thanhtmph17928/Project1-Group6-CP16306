@@ -16,6 +16,7 @@ import manga.readder.Adapter.LichSuAdapter;
 import manga.readder.Adapter.YeuThichAdapter;
 import manga.readder.DB.LichSuDAO;
 import manga.readder.DB.YeuThichDAO;
+import manga.readder.Model.LichSu;
 import manga.readder.Model.Manga;
 import manga.readder.R;
 
@@ -23,10 +24,14 @@ public class FragmentLichSu extends Fragment {
 
     ListView listView;
     LichSuAdapter adapter;
-    ArrayList<Manga> list;
+    ArrayList<Manga> mangaArrayList;
+    ArrayList<LichSu> lichSuArrayList;
     MainActivity mMainActivity;
     Manga manga;
+    LichSu lichSu;
     LichSuDAO lichSuDAO;
+    String thoiGian;
+    ArrayList<String> listThoiGian;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -34,17 +39,39 @@ public class FragmentLichSu extends Fragment {
         View view = inflater.inflate(R.layout.fragment_lich_su, container, false);
 
         lichSuDAO = new LichSuDAO(getContext());
-        list = new ArrayList<>();
+        lichSuArrayList = new ArrayList<>();
+        mangaArrayList = new ArrayList<>();
+        listThoiGian = new ArrayList<>();
 
         mMainActivity = (MainActivity) getActivity();
-
         listView = view.findViewById(R.id.lvLS);
-        list = (ArrayList<Manga>) lichSuDAO.getAll();
-        adapter = new LichSuAdapter(getActivity(), 0, list);
-        listView.setAdapter(adapter);
+        lichSuArrayList = (ArrayList<LichSu>) lichSuDAO.getAll();
 
+        for (int i = 0;i<lichSuArrayList.size();i++){
+            lichSu = lichSuArrayList.get(i);
+
+            thoiGian = String.valueOf(lichSu.getThoiGian());
+            listThoiGian.add(thoiGian);
+
+            manga = new Manga();
+            manga.setId(lichSu.getId());
+            manga.setTenTruyen(lichSu.getTenTruyen());
+            manga.setNguon(lichSu.getNguon());
+            manga.setAnh(lichSu.getAnh());
+            manga.setTacGia(lichSu.getTacGia());
+            manga.setTheLoai(lichSu.getTheLoai());
+            manga.setLuotXem(lichSu.getLuotXem());
+            manga.setNgay(lichSu.getNgay());
+            manga.setSoChap(lichSu.getSoChap());
+            mangaArrayList.add(manga);
+
+
+        }
+        thoiGian = String.valueOf(lichSu.getThoiGian());
+        adapter = new LichSuAdapter(getActivity(), 0, mangaArrayList,listThoiGian);
+        listView.setAdapter(adapter);
         listView.setOnItemClickListener((parent, view1, position, id) -> {
-            manga = list.get(position);
+            manga = mangaArrayList.get(position);
             mMainActivity.replaceFragment(manga);
         });
         return view;

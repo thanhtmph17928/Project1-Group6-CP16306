@@ -29,6 +29,7 @@ import manga.readder.Fragment.InfoMangaFragment;
 import manga.readder.Fragment.ReadMangaFragment;
 import manga.readder.Interface.GetManga;
 import manga.readder.Model.Chapter;
+import manga.readder.Model.LichSu;
 import manga.readder.Model.Manga;
 import manga.readder.R;
 import manga.readder.api.APIGetManga;

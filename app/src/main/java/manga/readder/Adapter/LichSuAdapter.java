@@ -12,18 +12,22 @@ import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 
+import manga.readder.Model.LichSu;
 import manga.readder.Model.Manga;
 import manga.readder.R;
 
 public class LichSuAdapter extends ArrayAdapter<Manga> {
     private final Context context;
     private final ArrayList<Manga> list;
+    String thoiGian;
+    ArrayList<String> stringArrayList;
 
 
-    public LichSuAdapter(Context context, int resource, ArrayList<Manga> objects) {
+    public LichSuAdapter(Context context, int resource, ArrayList<Manga> objects,ArrayList<String> stringArrayList) {
         super(context, resource,objects);
         this.context = context;
         this.list = objects;
+        this.stringArrayList = stringArrayList;
     }
 
     @SuppressLint("InflateParams")
@@ -35,11 +39,14 @@ public class LichSuAdapter extends ArrayAdapter<Manga> {
         }
         if (list.size() > 0) {
             Manga manga = this.list.get(position);
+            thoiGian = this.stringArrayList.get(position);
             TextView tvTenTruyen = convertView.findViewById(R.id.tvTenTruyen);
             TextView tvSoChap= convertView.findViewById(R.id.tvChapter);
+            TextView tvNgayDoc= convertView.findViewById(R.id.tvNgayDoc);
 
             tvTenTruyen.setText(manga.getTenTruyen());
-            tvSoChap.setText("Số chapter: "+manga.getSoChap());
+            tvNgayDoc.setText(""+thoiGian);
+            tvSoChap.setText(""+manga.getSoChap());
 
         }
         return convertView;

@@ -6,10 +6,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
-import manga.readder.Model.Manga;
+import manga.readder.Model.LichSu;
 
 public class LichSuDAO {
     private final SQLiteDatabase db;
@@ -20,7 +22,7 @@ public class LichSuDAO {
     }
 
     //insert
-    public long insert(Manga obj) {
+    public long insert(LichSu obj) {
         ContentValues values = new ContentValues();
         values.put("tenTruyen", obj.getTenTruyen());
         values.put("anh", obj.getAnh());
@@ -29,13 +31,14 @@ public class LichSuDAO {
         values.put("theLoai", obj.getTheLoai());
         values.put("soChap", obj.getSoChap());
         values.put("ngay", obj.getNgay());
-        values.put("luotXem", obj.getLuotXem());
+        values.put("idLichSu", obj.getId());
+        values.put("thoiGian", String.valueOf(obj.getThoiGian()));
 
         return db.insert("LichSu", null, values);
     }
 
     //update
-    public int update(Manga obj) {
+    public int update(LichSu obj) {
         ContentValues values = new ContentValues();
         values.put("tenTruyen", obj.getTenTruyen());
         values.put("anh", obj.getAnh());
@@ -45,6 +48,8 @@ public class LichSuDAO {
         values.put("soChap", obj.getSoChap());
         values.put("ngay", obj.getNgay());
         values.put("luotXem", obj.getLuotXem());
+        values.put("idLichSu", obj.getId());
+        values.put("thoiGian", String.valueOf(obj.getThoiGian()));
 
         return db.update("LichSu", values, "idLichSu=?", new String[]{String.valueOf(obj.getId())});
     }
@@ -55,24 +60,24 @@ public class LichSuDAO {
     }
 
     // get tat ca data
-    public List<Manga> getAll() {
+    public List<LichSu> getAll() {
         String sql = "SELECT * FROM LichSu";
         return getData(sql);
     }
 
 
     //getData theo id
-    public Manga getID(String id) {
+    public LichSu getID(String id) {
         String sql = "SELECT * FROM LichSu WHERE idLichSu=?";
-        List<Manga> mangaList = getData(sql, id);
-        return mangaList.get(0);
+        List<LichSu> lichSuList = getData(sql, id);
+        return lichSuList.get(0);
     }
 
-    private List<Manga> getData(String sql, String... selectionArgs) {
-        List<Manga> list = new ArrayList<>();
+    private List<LichSu> getData(String sql, String... selectionArgs) {
+        List<LichSu> list = new ArrayList<>();
         @SuppressLint("Recycle") Cursor c = db.rawQuery(sql, selectionArgs);
         while (c.moveToNext()) {
-            Manga obj = new Manga();
+            LichSu obj = new LichSu();
             obj.setId(c.getString(c.getColumnIndex("idLichSu")));
             obj.setTenTruyen(c.getString(c.getColumnIndex("tenTruyen")));
             obj.setAnh(c.getString(c.getColumnIndex("anh")));
@@ -82,7 +87,7 @@ public class LichSuDAO {
             obj.setSoChap(c.getString(c.getColumnIndex("soChap")));
             obj.setNgay(c.getString(c.getColumnIndex("ngay")));
             obj.setLuotXem(c.getString(c.getColumnIndex("luotXem")));
-
+            obj.setThoiGian(java.sql.Date.valueOf(c.getString(c.getColumnIndex("thoiGian"))));
             list.add(obj);
         }
         return list;

@@ -6,9 +6,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DbHelper extends SQLiteOpenHelper {
     final String createTableYeuThich =
-            "create table YeuThich (idYeuThich INTEGER  PRIMARY KEY AUTOINCREMENT, tenTruyen TEXT , anh TEXT, nguon TEXT, tacGia TEXT, theLoai TEXT, soChap TEXT, ngay TEXT, luotXem TEXT )";
+            "create table YeuThich (idYeuThich INTEGER  PRIMARY KEY , tenTruyen TEXT , anh TEXT, nguon TEXT, tacGia TEXT, theLoai TEXT, soChap TEXT, ngay TEXT, luotXem TEXT )";
     final String createTableLichSu =
-            "create table LichSu(idLichSu Integer  PRIMARY KEY AUTOINCREMENT, tenTruyen TEXT , anh TEXT, nguon TEXT, tacGia TEXT, theLoai TEXT, soChap TEXT, ngay TEXT, luotXem TEXT )";
+            "create table LichSu(idLichSu Integer  PRIMARY KEY , tenTruyen TEXT , anh TEXT, nguon TEXT, tacGia TEXT, theLoai TEXT, soChap TEXT, ngay TEXT, luotXem TEXT ,thoiGian DATE)";
     final String dropTableLibrarian = "drop table if exists YeuThich";
     final String dropTableMember = "drop table if exists LichSu";
 

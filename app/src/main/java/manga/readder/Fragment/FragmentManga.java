@@ -1,5 +1,6 @@
 package manga.readder.Fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +15,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import manga.readder.Activity.MainActivity;
 import manga.readder.Adapter.MangaAdapter;
 import manga.readder.DB.LichSuDAO;
 import manga.readder.Interface.GetManga;
+import manga.readder.Model.LichSu;
 import manga.readder.Model.Manga;
 import manga.readder.R;
 import manga.readder.api.APIGetManga;
@@ -30,7 +34,10 @@ public class FragmentManga extends Fragment implements GetManga {
     ArrayList<Manga> list;
     MainActivity mMainActivity;
     Manga manga;
+    LichSu lichSu;
     LichSuDAO lichSuDAO;
+    @SuppressLint("SimpleDateFormat")
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -44,11 +51,26 @@ public class FragmentManga extends Fragment implements GetManga {
         gridView.setOnItemClickListener((parent, view1, position, id) -> {
             manga = list.get(position);
             mMainActivity.replaceFragment(manga);
-            if (lichSuDAO.insert(manga)>0){
+            lichSu = new LichSu();
+            lichSu.setId(manga.getId());
+            lichSu.setTenTruyen(manga.getTenTruyen());
+            lichSu.setAnh(manga.getAnh());
+            lichSu.setNguon(manga.getNguon());
+            lichSu.setTacGia(manga.getTacGia());
+            lichSu.setTheLoai(manga.getTheLoai());
+            lichSu.setLuotXem(manga.getLuotXem());
+            lichSu.setNgay(manga.getNgay());
+            lichSu.setSoChap(manga.getSoChap());
+            lichSu.setThoiGian(java.sql.Date.valueOf(now()));
+
+            if (lichSuDAO.insert(lichSu)>0){
             }
         });
 
         return view;
+    }
+    private String now() {
+        return sdf.format(Calendar.getInstance().getTime());
     }
     private void init() {
         lichSuDAO = new LichSuDAO(getContext());
