@@ -40,13 +40,15 @@
                 android:id="@+id/btnYeuThich"
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"
-                android:text="Yêu thích" />
+                android:text="Yêu thích"
+                android:backgroundTint="@color/black"/>
 
             <Button
                 android:id="@+id/btnDatLich"
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"
-                android:text="Đặt lịch hẹn" />
+                android:text="Đặt lịch hẹn"
+                android:backgroundTint="@color/black"/>
         </LinearLayout>
 
     </LinearLayout>
