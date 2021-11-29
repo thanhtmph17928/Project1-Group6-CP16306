@@ -28,11 +28,13 @@
                 android:id="@+id/tvTieuDe"
                 android:layout_width="204dp"
                 android:layout_height="50dp"
+                android:textColor="@color/black"
                 android:textSize="20dp"/>
 
             <TextView
                 android:id="@+id/tvNguon"
                 android:layout_width="204dp"
+                android:textColor="@color/black"
                 android:layout_height="22dp" />
 
 
@@ -41,14 +43,14 @@
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"
                 android:text="Yêu thích"
-                android:backgroundTint="@color/black"/>
+                android:backgroundTint="#019AE8"/>
 
             <Button
                 android:id="@+id/btnDatLich"
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"
                 android:text="Đặt lịch hẹn"
-                android:backgroundTint="@color/black"/>
+                android:backgroundTint="#019AE8"/>
         </LinearLayout>
 
     </LinearLayout>
@@ -62,6 +64,7 @@
 
         <TextView
             android:id="@+id/tvTen"
+            android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
@@ -70,6 +73,7 @@
 
         <TextView
             android:id="@+id/tvTacGia"
+            android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TextView"
@@ -77,6 +81,7 @@
 
         <TextView
             android:id="@+id/tvTheLoai"
+            android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TextView"
@@ -84,6 +89,7 @@
 
         <TextView
             android:id="@+id/tvSoChap"
+            android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TextView"

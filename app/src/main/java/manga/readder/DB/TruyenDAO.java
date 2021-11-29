@@ -6,40 +6,39 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import manga.readder.Model.LichSu;
+import manga.readder.Model.Manga;
 
-public class LichSuDAO {
+public class TruyenDAO {
     private final SQLiteDatabase db;
 
-    public LichSuDAO(Context context) {
+
+    public TruyenDAO(Context context) {
         DbHelper dbHelper = new DbHelper(context);
         db = dbHelper.getWritableDatabase();
     }
 
     //insert
-    public long insert(LichSu obj) {
+    public long insert(Manga obj) {
         ContentValues values = new ContentValues();
-        values.put("idLichSu", obj.getId());
         values.put("tenTruyen", obj.getTenTruyen());
         values.put("anh", obj.getAnh());
         values.put("nguon", obj.getNguon());
         values.put("tacGia", obj.getTacGia());
         values.put("theLoai", obj.getTheLoai());
         values.put("soChap", obj.getSoChap());
-        values.put("luotXem", obj.getLuotXem());
         values.put("ngay", obj.getNgay());
-        values.put("thoiGian", String.valueOf(obj.getThoiGian()));
+        values.put("luotXem", obj.getLuotXem());
+        values.put("id", obj.getId());
 
-        return db.insert("LichSu", null, values);
+        return db.insert("Truyen", null, values);
     }
 
     //update
-    public int update(LichSu obj) {
+    public int update(Manga obj) {
         ContentValues values = new ContentValues();
         values.put("tenTruyen", obj.getTenTruyen());
         values.put("anh", obj.getAnh());
@@ -51,36 +50,35 @@ public class LichSuDAO {
         values.put("luotXem", obj.getLuotXem());
         values.put("idLichSu", obj.getId());
         values.put("luotXem", obj.getLuotXem());
-        values.put("thoiGian", String.valueOf(obj.getThoiGian()));
 
-        return db.update("LichSu", values, "idLichSu=?", new String[]{String.valueOf(obj.getId())});
+        return db.update("Truyen", values, "id=?", new String[]{String.valueOf(obj.getId())});
     }
 
     //delete
     public void delete(String id) {
-        db.delete("LichSu", "idLichSu=?", new String[]{id});
+        db.delete("Truyen", "id=?", new String[]{id});
     }
 
     // get tat ca data
-    public List<LichSu> getAll() {
-        String sql = "SELECT * FROM LichSu";
+    public ArrayList<Manga> getAll() {
+        String sql = "SELECT * FROM Truyen";
         return getData(sql);
     }
 
 
     //getData theo id
-    public LichSu getID(String id) {
-        String sql = "SELECT * FROM LichSu WHERE idLichSu=?";
-        List<LichSu> lichSuList = getData(sql, id);
-        return lichSuList.get(0);
+    public Manga getID(String id) {
+        String sql = "SELECT * FROM Truyen WHERE id=?";
+        List<Manga> mangaList = getData(sql, id);
+        return mangaList.get(0);
     }
 
-    private List<LichSu> getData(String sql, String... selectionArgs) {
-        List<LichSu> list = new ArrayList<>();
+    private ArrayList<Manga> getData(String sql, String... selectionArgs) {
+        ArrayList<Manga> list = new ArrayList<>();
         @SuppressLint("Recycle") Cursor c = db.rawQuery(sql, selectionArgs);
         while (c.moveToNext()) {
-            LichSu obj = new LichSu();
-            obj.setId(c.getString(c.getColumnIndex("idLichSu")));
+            Manga obj = new Manga();
+            obj.setId(c.getString(c.getColumnIndex("id")));
             obj.setTenTruyen(c.getString(c.getColumnIndex("tenTruyen")));
             obj.setAnh(c.getString(c.getColumnIndex("anh")));
             obj.setNguon(c.getString(c.getColumnIndex("nguon")));
@@ -89,13 +87,19 @@ public class LichSuDAO {
             obj.setSoChap(c.getString(c.getColumnIndex("soChap")));
             obj.setNgay(c.getString(c.getColumnIndex("ngay")));
             obj.setLuotXem(c.getString(c.getColumnIndex("luotXem")));
-            obj.setThoiGian(java.sql.Date.valueOf(c.getString(c.getColumnIndex("thoiGian"))));
             list.add(obj);
         }
         return list;
     }
+    public int checkExistsManga(String id) {
+        int check = 1;
+        String getMG = "SELECT * FROM Truyen WHERE id="+id;
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(getMG, null);
+        if (cursor.getCount() != 0) {
+            check = -1;
+        }
+        return check;
+    }
 
 
 }
-
-

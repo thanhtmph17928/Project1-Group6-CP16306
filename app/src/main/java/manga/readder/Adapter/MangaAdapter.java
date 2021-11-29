@@ -6,8 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
 
@@ -17,36 +21,30 @@ import java.util.List;
 import manga.readder.Model.Manga;
 import manga.readder.R;
 
-public class MangaAdapter extends ArrayAdapter<Manga> {
+public class MangaAdapter extends ArrayAdapter<Manga> implements Filterable {
 
     private final Context context;
-    private final ArrayList<Manga> list;
+    private  ArrayList<Manga> mListManga;
 
-//    private MangaAdapter.OnATtemClickListener mOnATtemClickListener;
-//
-//    public interface OnATtemClickListener{
-//        void onClickItemUser();
-//    }
-
-    public MangaAdapter(Context context, int resource, ArrayList<Manga> objects) {
-        super(context, resource, objects);
+    public MangaAdapter(Context context, int resource, ArrayList<Manga> mListManga) {
+        super(context, resource, mListManga);
         this.context = context;
-        this.list = objects;
+        this.mListManga = mListManga;
     }
-//    public void searchManga(String s){
-//        s = s.toUpperCase();
-//        int k = 0;
-//        for (int i=0;i<list.size();i++){
-//            Manga manga = list.get(i);
-//            String name = manga.getMangaName().toUpperCase();
-//            if (name.indexOf(s)>=0){
-//                list.set(i,list.get(k));
-//                list.set(k,manga);
-//                k++;
-//            }
-//        }
-//        notifyDataSetChanged();
-//    }
+    public void sortTruyen(String s){
+        s = s.toUpperCase();
+        int k = 0;
+        for (int i=0;i<mListManga.size();i++){
+            Manga manga = mListManga.get(i);
+            String name = manga.getTenTruyen().toUpperCase();
+            if (name.indexOf(s)>=0){
+                mListManga.set(i,mListManga.get(k));
+                mListManga.set(k,manga);
+                k++;
+            }
+        }
+        notifyDataSetChanged();
+    }
 
     @SuppressLint("InflateParams")
     @Override
@@ -55,15 +53,48 @@ public class MangaAdapter extends ArrayAdapter<Manga> {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.item_manga, null);
         }
-        if (list.size() > 0) {
-            Manga manga = this.list.get(position);
+        if (mListManga.size() > 0) {
+            Manga manga = mListManga.get(position);
             TextView tvMangaName = convertView.findViewById(R.id.tvMangaName);
             ImageView imgManga = convertView.findViewById(R.id.imgManga);
 
             tvMangaName.setText(manga.getTenTruyen());
             Glide.with(context).load(manga.getAnh()).into(imgManga);
         }
+
         return convertView;
 
     }
+
+//    @NonNull
+//    @Override
+//    public Filter getFilter() {
+//        return new Filter() {
+//            @Override
+//            protected FilterResults performFiltering(CharSequence constraint) {
+////                String search = constraint.toString();
+////                if (search.isEmpty()){
+////                    mListManga = mListMangaOld;
+////                }
+////                else {
+////                    ArrayList<Manga> mangas = new ArrayList<>();
+////                    for (Manga manga:mListMangaOld){
+////                        if (manga.getTenTruyen().toLowerCase().contains(search.toLowerCase())){
+////                            mangas.add(manga);
+////                        }
+////                    }
+////                    mListManga = mangas;
+////                }
+////                FilterResults filterResults = new FilterResults();
+////                filterResults.values = mListManga;
+//                return null;
+//            }
+//
+//            @Override
+//            protected void publishResults(CharSequence constraint, FilterResults results) {
+////                mListManga = (ArrayList<Manga>) results.values;
+//                notifyDataSetChanged();
+//            }
+//        };
+//    }
 }

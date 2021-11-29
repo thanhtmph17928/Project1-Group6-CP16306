@@ -6,9 +6,9 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="56dp"
-        android:paddingLeft="30dp"
+        android:paddingLeft="20dp"
         android:paddingTop="5dp"
-        android:src="@drawable/ic_baseline_favorite_24" />
+        android:src="@drawable/ic_fav" />
 
     <TextView
         android:id="@+id/tvTenTruyen"
@@ -18,7 +18,9 @@
         android:text="Doraemon"
         android:textSize="20dp"
         android:maxLines="1"
+        android:textColor="@color/black"
         android:singleLine="true"
+        android:layout_marginLeft="10dp"
         />
 
     <TextView
@@ -26,6 +28,7 @@
         android:layout_width="179dp"
         android:layout_height="56dp"
         android:gravity="center"
+        android:textColor="@color/black"
         android:text="Chapter"
         android:textSize="20dp" />
 </LinearLayout>

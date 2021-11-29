@@ -24,7 +24,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.ArrayList;
+
 import manga.readder.Adapter.MangaAdapter;
+import manga.readder.DB.TruyenDAO;
 import manga.readder.Fragment.FragmentBangXepHang;
 import manga.readder.Fragment.FragmentDanhSachDatLich;
 import manga.readder.Fragment.FragmentDanhSachYT;
@@ -46,11 +49,16 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     FragmentManager manager;
     ActionBarDrawerToggle toggle;
+    TruyenDAO truyenDAO;
+    ArrayList<Manga> list;
     private SearchView searchView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        truyenDAO = new TruyenDAO(getApplicationContext());
+        list = truyenDAO.getAll();
+        adapter = new MangaAdapter(getApplicationContext(),0,list);
         drawerLayout = findViewById(R.id.drawerlayout);
         toolbar = findViewById(R.id.toolBar);
 
@@ -66,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         manager.beginTransaction()
                 .replace(R.id.flContent, fragmentManga)
                 .commit();
+
         NavigationView nv = findViewById(R.id.navView);
         nv.setNavigationItemSelectedListener(item -> {
             manager = getSupportFragmentManager();
@@ -76,8 +85,6 @@ public class MainActivity extends AppCompatActivity {
                     manager.beginTransaction()
                             .replace(R.id.flContent, fragmentManga1)
                             .commit();
-                    setNav();
-
                     break;
                 case R.id.nav_bang_xep_hang:
                     setTitle("Bảng xếp hạng");
@@ -113,13 +120,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-    }
-    private void setNav(){
-        setSupportActionBar(toolbar);
-        toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
-                R.string.nav_drawer_open, R.string.nav_drawer_close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
     }
 
     @Override
@@ -174,13 +174,27 @@ public class MainActivity extends AppCompatActivity {
 //        });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.search_menu,menu);
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        searchView = (SearchView) menu.findItem(R.id.actionsearch).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setMaxWidth(Integer.MAX_VALUE);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.search_menu,menu);
+//        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+//        searchView = (SearchView) menu.findItem(R.id.actionsearch).getActionView();
+//        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+//        searchView.setMaxWidth(Integer.MAX_VALUE);
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                adapter.getFilter().filter(query);
+//
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                adapter.getFilter().filter(newText);
+//                return false;
+//            }
+//        });
+//        return true;
+//    }
 }

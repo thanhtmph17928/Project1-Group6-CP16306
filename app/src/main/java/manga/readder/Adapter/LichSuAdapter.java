@@ -46,7 +46,7 @@ public class LichSuAdapter extends ArrayAdapter<Manga> {
 
             tvTenTruyen.setText(manga.getTenTruyen());
             tvNgayDoc.setText(""+thoiGian);
-            tvSoChap.setText(""+manga.getSoChap());
+            tvSoChap.setText("Chapter "+manga.getSoChap());
 
         }
         return convertView;

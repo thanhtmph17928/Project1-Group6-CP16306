@@ -1,16 +1,26 @@
 package manga.readder.Fragment;
 
 import android.annotation.SuppressLint;
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,6 +32,7 @@ import java.util.Calendar;
 import manga.readder.Activity.MainActivity;
 import manga.readder.Adapter.MangaAdapter;
 import manga.readder.DB.LichSuDAO;
+import manga.readder.DB.TruyenDAO;
 import manga.readder.Interface.GetManga;
 import manga.readder.Model.LichSu;
 import manga.readder.Model.Manga;
@@ -36,17 +47,41 @@ public class FragmentManga extends Fragment implements GetManga {
     Manga manga;
     LichSu lichSu;
     LichSuDAO lichSuDAO;
+    TruyenDAO truyenDAO;
+    SearchView searchView;
+    EditText edSearch;
     @SuppressLint("SimpleDateFormat")
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_manga, container, false);
+        setHasOptionsMenu(true);
         init();
         mapping();
         setUp();
         gridView = view.findViewById(R.id.gvManga);
+        edSearch = view.findViewById(R.id.edSearch);
+        edSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String  s = edSearch.getText().toString();
+                adapter.sortTruyen(s);
+            }
+        });
         new APIGetManga(this).execute();
+        adapter = new MangaAdapter(getContext(),0,list);
+        gridView.setAdapter(adapter);
 
         gridView.setOnItemClickListener((parent, view1, position, id) -> {
             manga = list.get(position);
@@ -76,6 +111,7 @@ public class FragmentManga extends Fragment implements GetManga {
         lichSuDAO = new LichSuDAO(getContext());
         list = new ArrayList<>();
         mMainActivity = (MainActivity) getActivity();
+
 //        adapter = new MangaAdapter(getActivity(),0,list);
 //        gridView.setAdapter(adapter);
 
@@ -97,11 +133,19 @@ public class FragmentManga extends Fragment implements GetManga {
     @Override
     public void finish(String data) {
         try {
+            truyenDAO = new TruyenDAO(getContext());
             list.clear();
             JSONArray array = new JSONArray(data);
             for (int i = 0; i < array.length(); i++) {
                 JSONObject o = array.getJSONObject(i);
-                list.add(new Manga(o));
+                Manga manga = new Manga(o);
+                String id = manga.getId();
+                if (truyenDAO.checkExistsManga(id)>0){
+                    if (truyenDAO.insert(manga)>0){
+
+                    }
+                }
+                list.add(manga);
                 adapter = new MangaAdapter(getActivity(), 0, list) ;
                 gridView.setAdapter(adapter);
 
@@ -114,4 +158,32 @@ public class FragmentManga extends Fragment implements GetManga {
     public void error() {
         Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
     }
+
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        inflater.inflate(R.menu.search_menu,menu);
+//        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+//        searchView = (androidx.appcompat.widget.SearchView) menu.findItem(R.id.actionsearch).getActionView();
+//        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+//        searchView.setMaxWidth(Integer.MAX_VALUE);
+////        searchView.setOnClickListener(v -> {
+////            edSearch.setVisibility(View.VISIBLE);
+////        });
+////        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+////            @Override
+////            public boolean onQueryTextSubmit(String query) {
+////                adapter.getFilter().filter(query);
+////
+////                return false;
+////            }
+////
+////            @Override
+////            public boolean onQueryTextChange(String newText) {
+////                adapter.getFilter().filter(newText);
+////                return false;
+////            }
+////        });
+//    }
+
+
 }
