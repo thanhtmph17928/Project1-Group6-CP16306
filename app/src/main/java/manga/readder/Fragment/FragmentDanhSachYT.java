@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.ListView;
 
 import androidx.fragment.app.Fragment;
@@ -20,7 +21,7 @@ import manga.readder.R;
 
 public class FragmentDanhSachYT extends Fragment {
 
-    ListView listView;
+    GridView gridView;
     YeuThichAdapter adapter;
     ArrayList<Manga> list;
     MainActivity mMainActivity;
@@ -38,14 +39,14 @@ public class FragmentDanhSachYT extends Fragment {
 
         mMainActivity = (MainActivity) getActivity();
 
-        listView = view.findViewById(R.id.lvYT);
+        gridView = view.findViewById(R.id.gvManga);
         updateView();
 
-        listView.setOnItemClickListener((parent, view1, position, id) -> {
+        gridView.setOnItemClickListener((parent, view1, position, id) -> {
             manga = list.get(position);
             mMainActivity.replaceFragment(manga);
         });
-        listView.setOnItemLongClickListener((parent, view1, position, id) -> {
+        gridView.setOnItemLongClickListener((parent, view1, position, id) -> {
             manga = list.get(position);
             String idTruyen = manga.getId();
             xoa(idTruyen);
@@ -53,22 +54,18 @@ public class FragmentDanhSachYT extends Fragment {
         });
         return view;
     }
-    private void xoa(final String id){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Delete");
-        builder.setMessage("Bạn có chắc chắn muốn xóa ?");
-        builder.setCancelable(true);
-        builder.setPositiveButton("Yes", (dialog, which) -> {
+    public void xoa(final String id){
             yeuThichDAO.delete(id);
-            updateView();
-            dialog.cancel();
-        });
-        builder.setNegativeButton("No", (dialog, which) -> dialog.cancel());
-        builder.show();
+
+    }
+    public void them(final Manga manga){
+        yeuThichDAO.insert(manga);
+
     }
     private void updateView(){
         list = (ArrayList<Manga>) yeuThichDAO.getAll();
-        adapter = new YeuThichAdapter(getActivity(), 0, list);
-        listView.setAdapter(adapter);
+        adapter = new YeuThichAdapter(getActivity(), this, list);
+        gridView.setAdapter(adapter);
     }
+
 }

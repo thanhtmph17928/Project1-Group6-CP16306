@@ -33,18 +33,15 @@ public class BangXepHangAdapter extends ArrayAdapter<Manga> {
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.item_bang_xep_hang, null);
+            convertView = inflater.inflate(R.layout.item_manga, null);
         }
         if (list.size() > 0) {
-            Manga manga = this.list.get(position);
-            TextView tvId = convertView.findViewById(R.id.tvId);
-            TextView tvTenTruyen = convertView.findViewById(R.id.tvTenTruyen);
-            TextView tvLuotXem = convertView.findViewById(R.id.tvLuotXem);
+            Manga manga = list.get(position);
+            TextView tvMangaName = convertView.findViewById(R.id.tvMangaName);
+            ImageView imgManga = convertView.findViewById(R.id.imgManga);
 
-            tvId.setText(manga.getId());
-            tvTenTruyen.setText(manga.getTenTruyen());
-            tvLuotXem.setText("Lượt xem: "+manga.getLuotXem());
-
+            tvMangaName.setText(manga.getTenTruyen());
+            Glide.with(context).load(manga.getAnh()).into(imgManga);
         }
         return convertView;
 

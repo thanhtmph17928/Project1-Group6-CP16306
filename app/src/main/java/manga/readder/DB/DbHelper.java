@@ -8,25 +8,22 @@ public class DbHelper extends SQLiteOpenHelper {
     final String createTableYeuThich =
             "create table YeuThich (idYeuThich TEXT  PRIMARY KEY , tenTruyen TEXT , anh TEXT, nguon TEXT, tacGia TEXT, theLoai TEXT, soChap TEXT, ngay TEXT, luotXem INTERGER )";
     final String createTableLichSu =
-            "create table LichSu(idLichSu TEXT  PRIMARY KEY , tenTruyen TEXT , anh TEXT, nguon TEXT, tacGia TEXT, theLoai TEXT, soChap TEXT, ngay TEXT, luotXem INTERGER ,thoiGian DATE)";
-    final String dropTableLibrarian = "drop table if exists YeuThich";
-    final String dropTableMember = "drop table if exists LichSu";
+            "create table LichSu(id INTEGER PRIMARY KEY AUTOINCREMENT ,idLichSu TEXT  , tenTruyen TEXT , anh TEXT, nguon TEXT, tacGia TEXT, theLoai TEXT, soChap TEXT, ngay TEXT, luotXem INTERGER ,thoiGian DATE)";
     final String createTableTruyen =
             "create table Truyen (id TEXT  PRIMARY KEY , tenTruyen TEXT , anh TEXT, nguon TEXT, tacGia TEXT, theLoai TEXT, soChap TEXT, ngay TEXT, luotXem INTERGER )";
+
     final String dropTableTruyen = "drop table if exists Truyen";
+    final String dropTableLibrarian = "drop table if exists YeuThich";
+    final String dropTableMember = "drop table if exists LichSu";
+
     public DbHelper(Context context) {
         super(context, "manga", null, 1);
     }
-
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(createTableYeuThich);
         db.execSQL(createTableLichSu);
         db.execSQL(createTableTruyen);
-
-//        db.execSQL(createTableBookType);
-//        db.execSQL(createTableBook);
-//        db.execSQL(createTableBookBill);
     }
 
     @Override
@@ -34,9 +31,6 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(dropTableLibrarian);
         db.execSQL(dropTableMember);
         db.execSQL(dropTableTruyen);
-//        db.execSQL(dropTableBookType);
-//        db.execSQL(dropTableBook);
-//        db.execSQL(dropTableBookBill);
     }
 }
 

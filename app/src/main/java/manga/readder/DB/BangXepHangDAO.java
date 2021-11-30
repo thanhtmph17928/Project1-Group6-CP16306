@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
-import java.util.List;
+
 import manga.readder.Model.Manga;
 
 public class BangXepHangDAO {
@@ -18,8 +18,6 @@ public class BangXepHangDAO {
         DbHelper dbHelper = new DbHelper(context);
         db = dbHelper.getWritableDatabase();
     }
-
-    //top10
     public ArrayList<Manga> getTop() {
         String sqlTop = "SELECT * FROM Truyen " +
                 "GROUP BY id ORDER BY luotXem DESC LIMIT 20";
@@ -37,11 +35,7 @@ public class BangXepHangDAO {
             obj.setNgay(c.getString(c.getColumnIndex("ngay")));
             obj.setLuotXem(c.getString(c.getColumnIndex("luotXem")));
             mangaArrayList.add(obj);
-
         }
         return mangaArrayList;
-
-
     }
-
 }

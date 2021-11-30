@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ import manga.readder.R;
 
 public class FragmentLichSu extends Fragment {
 
-    ListView listView;
+    GridView gridView;
     LichSuAdapter adapter;
     ArrayList<Manga> mangaArrayList;
     ArrayList<LichSu> lichSuArrayList;
@@ -44,7 +45,7 @@ public class FragmentLichSu extends Fragment {
         listThoiGian = new ArrayList<>();
 
         mMainActivity = (MainActivity) getActivity();
-        listView = view.findViewById(R.id.lvLS);
+        gridView = view.findViewById(R.id.gvManga);
         lichSuArrayList = (ArrayList<LichSu>) lichSuDAO.getAll();
 
         for (int i = 0;i<lichSuArrayList.size();i++){
@@ -67,10 +68,9 @@ public class FragmentLichSu extends Fragment {
 
 
         }
-        thoiGian = String.valueOf(lichSu.getThoiGian());
         adapter = new LichSuAdapter(getActivity(), 0, mangaArrayList,listThoiGian);
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener((parent, view1, position, id) -> {
+        gridView.setAdapter(adapter);
+        gridView.setOnItemClickListener((parent, view1, position, id) -> {
             manga = mangaArrayList.get(position);
             mMainActivity.replaceFragment(manga);
         });
