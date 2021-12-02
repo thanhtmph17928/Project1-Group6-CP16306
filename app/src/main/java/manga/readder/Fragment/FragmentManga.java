@@ -7,8 +7,10 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -42,6 +44,7 @@ public class FragmentManga extends Fragment implements GetManga {
     TruyenDAO truyenDAO;
     EditText edSearch;
     View view;
+    ImageView imgAnHien;
     @SuppressLint("SimpleDateFormat")
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -57,6 +60,15 @@ public class FragmentManga extends Fragment implements GetManga {
         updateView();
         setClick();
 
+        imgAnHien = view.findViewById(R.id.imgAnHienView);
+
+        imgAnHien.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                edSearch.setVisibility(View.VISIBLE);
+            }
+        });
+
         return view;
     }
 
@@ -69,6 +81,7 @@ public class FragmentManga extends Fragment implements GetManga {
     private void mapping() {
         gridView = view.findViewById(R.id.gvManga);
         edSearch = view.findViewById(R.id.edSearch);
+        edSearch.setVisibility(View.INVISIBLE);
     }
 
     private void setClick() {

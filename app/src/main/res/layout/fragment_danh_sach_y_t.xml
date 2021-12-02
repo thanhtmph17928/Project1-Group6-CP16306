@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:numColumns="2"
-    tools:context=".Fragment.FragmentDanhSachYT">
+    tools:context=".Fragment.FragmentDanhSachYT"
+    android:layout_marginTop="20dp">
 
 
 </GridView>
