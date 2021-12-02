@@ -11,13 +11,12 @@ import manga.readder.Model.Manga;
 
 public class BangXepHangDAO {
     private final SQLiteDatabase db;
-    private final Context context;
 
     public BangXepHangDAO(Context context) {
-        this.context = context;
         DbHelper dbHelper = new DbHelper(context);
         db = dbHelper.getWritableDatabase();
     }
+
     public ArrayList<Manga> getTop() {
         String sqlTop = "SELECT * FROM Truyen " +
                 "GROUP BY id ORDER BY luotXem DESC LIMIT 20";

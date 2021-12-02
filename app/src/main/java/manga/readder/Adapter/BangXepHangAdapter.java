@@ -9,8 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
@@ -24,10 +22,11 @@ public class BangXepHangAdapter extends ArrayAdapter<Manga> {
     private final ArrayList<Manga> list;
 
     public BangXepHangAdapter(Context context, int resource, ArrayList<Manga> objects) {
-        super(context, resource,objects);
+        super(context, resource, objects);
         this.context = context;
         this.list = objects;
     }
+
     @SuppressLint("InflateParams")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {

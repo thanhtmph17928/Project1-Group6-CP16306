@@ -35,22 +35,6 @@ public class YeuThichDAO {
         return db.insert("YeuThich", null, values);
     }
 
-    //update
-    public int update(Manga obj) {
-        ContentValues values = new ContentValues();
-        values.put("idYeuThich", obj.getId());
-        values.put("tenTruyen", obj.getTenTruyen());
-        values.put("anh", obj.getAnh());
-        values.put("nguon", obj.getNguon());
-        values.put("tacGia", obj.getTacGia());
-        values.put("theLoai", obj.getTheLoai());
-        values.put("soChap", obj.getSoChap());
-        values.put("ngay", obj.getNgay());
-        values.put("luotXem", obj.getLuotXem());
-
-        return db.update("YeuThich", values, "idYeuThich=?", new String[]{String.valueOf(obj.getId())});
-    }
-
     //delete
     public void delete(String id) {
         db.delete("YeuThich", "idYeuThich=?", new String[]{id});
@@ -62,13 +46,6 @@ public class YeuThichDAO {
         return getData(sql);
     }
 
-
-    //getData theo id
-    public Manga getID(String id) {
-        String sql = "SELECT * FROM YeuThich WHERE idYeuThich=?";
-        List<Manga> mangaList = getData(sql, id);
-        return mangaList.get(0);
-    }
 
     private List<Manga> getData(String sql, String... selectionArgs) {
         List<Manga> list = new ArrayList<>();
@@ -89,9 +66,10 @@ public class YeuThichDAO {
         }
         return list;
     }
+
     public int checkExists(String id) {
         int check = 1;
-        String getMG = "SELECT * FROM YeuThich WHERE idYeuThich ="+id;
+        String getMG = "SELECT * FROM YeuThich WHERE idYeuThich =" + id;
         @SuppressLint("Recycle") Cursor cursor = db.rawQuery(getMG, null);
         if (cursor.getCount() != 0) {
             check = -1;

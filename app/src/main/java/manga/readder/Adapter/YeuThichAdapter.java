@@ -9,8 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
@@ -26,7 +24,7 @@ public class YeuThichAdapter extends ArrayAdapter<Manga> {
 
 
     public YeuThichAdapter(Context context, FragmentDanhSachYT fragment, ArrayList<Manga> objects) {
-        super(context, 0,objects);
+        super(context, 0, objects);
         this.context = context;
         this.list = objects;
         this.fragment = fragment;
@@ -45,6 +43,8 @@ public class YeuThichAdapter extends ArrayAdapter<Manga> {
             ImageView imgManga = convertView.findViewById(R.id.imgManga);
             TextView tvXoa = convertView.findViewById(R.id.tvUnFav);
             TextView tvThem = convertView.findViewById(R.id.tvFav);
+            TextView tvXoa1 = convertView.findViewById(R.id.tvUnNotif);
+            TextView tvThem1 = convertView.findViewById(R.id.tvNotif);
             tvMangaName.setText(manga.getTenTruyen());
             Glide.with(context).load(manga.getAnh()).into(imgManga);
             tvXoa.setOnClickListener(v -> {
@@ -57,6 +57,17 @@ public class YeuThichAdapter extends ArrayAdapter<Manga> {
                 tvXoa.setVisibility(View.VISIBLE);
                 tvThem.setVisibility(View.INVISIBLE);
             });
+            tvXoa1.setOnClickListener(v -> {
+                fragment.xoa1(manga.getId());
+                tvXoa1.setVisibility(View.INVISIBLE);
+                tvThem1.setVisibility(View.VISIBLE);
+            });
+            tvThem1.setOnClickListener(v -> {
+                fragment.them1(manga);
+                tvThem1.setVisibility(View.INVISIBLE);
+                tvXoa1.setVisibility(View.VISIBLE);
+            });
+
         }
         return convertView;
 

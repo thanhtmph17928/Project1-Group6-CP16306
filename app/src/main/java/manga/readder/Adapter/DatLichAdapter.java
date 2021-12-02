@@ -13,41 +13,41 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
+import manga.readder.Fragment.FragmentDanhSachDatLich;
 import manga.readder.Model.Manga;
 import manga.readder.R;
 
-public class LichSuAdapter extends ArrayAdapter<Manga> {
+public class DatLichAdapter extends ArrayAdapter<Manga> {
     private final Context context;
     private final ArrayList<Manga> list;
-    String thoiGian;
-    ArrayList<String> stringArrayList;
+    FragmentDanhSachDatLich fragment;
 
 
-    public LichSuAdapter(Context context, int resorce, ArrayList<Manga> objects, ArrayList<String> stringArrayList) {
-        super(context, resorce, objects);
+    public DatLichAdapter(Context context, FragmentDanhSachDatLich fragment, ArrayList<Manga> objects) {
+        super(context, 0, objects);
         this.context = context;
         this.list = objects;
-        this.stringArrayList = stringArrayList;
+        this.fragment = fragment;
     }
 
-    @SuppressLint({"InflateParams", "SetTextI18n"})
+    @SuppressLint("InflateParams")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.item_lich_su, null);
+            convertView = inflater.inflate(R.layout.item_dat_lich, null);
         }
         if (list.size() > 0) {
-            Manga manga = this.list.get(position);
-            thoiGian = this.stringArrayList.get(position);
-            TextView tvMangaName = convertView.findViewById(R.id.tvMangaName);
+            Manga manga = list.get(position);
             ImageView imgManga = convertView.findViewById(R.id.imgManga);
-            TextView tvNgayDoc = convertView.findViewById(R.id.tvThoiGian);
-            tvNgayDoc.setText("" + thoiGian);
-            tvMangaName.setText(manga.getTenTruyen());
+            TextView tvName = convertView.findViewById(R.id.tvName);
+            TextView tvTacGia = convertView.findViewById(R.id.tvTacGia);
+            tvName.setText(manga.getTenTruyen());
+            tvTacGia.setText(manga.getTacGia());
             Glide.with(context).load(manga.getAnh()).into(imgManga);
 
         }
         return convertView;
+
     }
 }

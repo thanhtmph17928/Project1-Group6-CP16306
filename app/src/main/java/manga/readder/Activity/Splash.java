@@ -1,12 +1,12 @@
 package manga.readder.Activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import manga.readder.R;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import manga.readder.R;
 
 public class Splash extends AppCompatActivity {
 
@@ -21,6 +21,6 @@ public class Splash extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        },1500);
+        }, 1500);
     }
 }

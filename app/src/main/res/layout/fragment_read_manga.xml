@@ -5,32 +5,10 @@
     android:layout_height="match_parent"
     tools:context=".Fragment.ReadMangaFragment">
 
-<!--    <ImageView-->
-<!--        android:id="@+id/imgAnhTruyen"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent" />-->
-
-<!--    <ImageButton-->
-<!--        android:id="@+id/btnNext"-->
-<!--        android:layout_width="60dp"-->
-<!--        android:layout_height="60dp"-->
-<!--        android:background="@drawable/ic_next"-->
-<!--        android:layout_centerVertical="true"-->
-<!--        android:layout_alignParentRight="true"-->
-<!--        />-->
-<!--    <ImageButton-->
-<!--        android:id="@+id/btnPrevious"-->
-<!--        android:layout_width="60dp"-->
-<!--        android:layout_height="60dp"-->
-<!--        android:background="@drawable/ic_pre"-->
-<!--        android:layout_centerVertical="true"-->
-
-<!--        />-->
     <WebView
+        android:id="@+id/wvChap"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/wvChap"/>
-
+        android:layout_height="match_parent" />
 
 
 </RelativeLayout>

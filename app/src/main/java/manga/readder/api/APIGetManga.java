@@ -18,6 +18,7 @@ public class APIGetManga extends AsyncTask<Void, Void, Void> {
         this.getManga = getManga;
         this.getManga.start();
     }
+
     //https://mangareaderrecreate.000webhostapp.com/layTruyen.php
     //       http://myjson.dit.upm.es/api/bins/bnwz
     @Override

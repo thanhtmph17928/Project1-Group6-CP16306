@@ -5,17 +5,19 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".Fragment.FragmentManga">
+
     <EditText
         android:id="@+id/edSearch"
         android:layout_width="200dp"
         android:layout_height="50dp"
-        android:textColor="@color/black"
-        android:background="@drawable/bg_ed"
         android:layout_gravity="center"
-        android:textAlignment="center"
+        android:background="@drawable/bg_ed"
+        android:drawableStart="@drawable/ic_search"
         android:hint="Nhập tên truyện"
-        android:textColorHint="#000000"
-        android:drawableStart="@drawable/ic_search"/>
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textColorHint="#000000" />
+
     <GridView
         android:id="@+id/gvManga"
         android:layout_width="match_parent"

@@ -11,11 +11,10 @@ import java.util.List;
 
 import manga.readder.Model.Manga;
 
-public class TruyenDAO {
+public class DatLichDAO {
     private final SQLiteDatabase db;
 
-
-    public TruyenDAO(Context context) {
+    public DatLichDAO(Context context) {
         DbHelper dbHelper = new DbHelper(context);
         db = dbHelper.getWritableDatabase();
     }
@@ -23,6 +22,7 @@ public class TruyenDAO {
     //insert
     public long insert(Manga obj) {
         ContentValues values = new ContentValues();
+        values.put("idDatLich", obj.getId());
         values.put("tenTruyen", obj.getTenTruyen());
         values.put("anh", obj.getAnh());
         values.put("nguon", obj.getNguon());
@@ -31,24 +31,28 @@ public class TruyenDAO {
         values.put("soChap", obj.getSoChap());
         values.put("ngay", obj.getNgay());
         values.put("luotXem", obj.getLuotXem());
-        values.put("id", obj.getId());
 
-        return db.insert("Truyen", null, values);
+        return db.insert("DatLich", null, values);
+    }
+
+    //delete
+    public void delete(String id) {
+        db.delete("DatLich", "idDatLich=?", new String[]{id});
     }
 
     // get tat ca data
-    public ArrayList<Manga> getAll() {
-        String sql = "SELECT * FROM Truyen";
+    public List<Manga> getAll() {
+        String sql = "SELECT * FROM DatLich";
         return getData(sql);
     }
 
 
-    private ArrayList<Manga> getData(String sql, String... selectionArgs) {
-        ArrayList<Manga> list = new ArrayList<>();
+    private List<Manga> getData(String sql, String... selectionArgs) {
+        List<Manga> list = new ArrayList<>();
         @SuppressLint("Recycle") Cursor c = db.rawQuery(sql, selectionArgs);
         while (c.moveToNext()) {
             Manga obj = new Manga();
-            obj.setId(c.getString(c.getColumnIndex("id")));
+            obj.setId(c.getString(c.getColumnIndex("idDatLich")));
             obj.setTenTruyen(c.getString(c.getColumnIndex("tenTruyen")));
             obj.setAnh(c.getString(c.getColumnIndex("anh")));
             obj.setNguon(c.getString(c.getColumnIndex("nguon")));
@@ -57,18 +61,23 @@ public class TruyenDAO {
             obj.setSoChap(c.getString(c.getColumnIndex("soChap")));
             obj.setNgay(c.getString(c.getColumnIndex("ngay")));
             obj.setLuotXem(c.getString(c.getColumnIndex("luotXem")));
+
             list.add(obj);
         }
         return list;
     }
 
-    public int checkExistsManga(String id) {
+    public int checkExists(String id) {
         int check = 1;
-        String getMG = "SELECT * FROM Truyen WHERE id=" + id;
+        String getMG = "SELECT * FROM DatLich WHERE idDatLich =" + id;
         @SuppressLint("Recycle") Cursor cursor = db.rawQuery(getMG, null);
         if (cursor.getCount() != 0) {
             check = -1;
         }
         return check;
     }
+
+
 }
+
+

@@ -19,7 +19,7 @@ public class Manga implements Serializable {
     public Manga() {
     }
 
-    public Manga(JSONObject o) throws JSONException{
+    public Manga(JSONObject o) throws JSONException {
         id = o.getString("id");
         tenTruyen = o.getString("tenTruyen");
         anh = o.getString("anh");

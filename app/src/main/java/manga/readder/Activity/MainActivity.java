@@ -1,32 +1,28 @@
 package manga.readder.Activity;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.ConditionVariable;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 import manga.readder.Adapter.MangaAdapter;
+import manga.readder.DB.DatLichDAO;
 import manga.readder.DB.TruyenDAO;
 import manga.readder.Fragment.FragmentBangXepHang;
 import manga.readder.Fragment.FragmentDanhSachDatLich;
@@ -35,30 +31,32 @@ import manga.readder.Fragment.FragmentLichSu;
 import manga.readder.Fragment.FragmentManga;
 import manga.readder.Fragment.InfoMangaFragment;
 import manga.readder.Fragment.ReadMangaFragment;
-import manga.readder.Interface.GetManga;
 import manga.readder.Model.Chapter;
-import manga.readder.Model.LichSu;
 import manga.readder.Model.Manga;
 import manga.readder.R;
-import manga.readder.api.APIGetManga;
 
 public class MainActivity extends AppCompatActivity {
+    public static final String CHANNEL_1_ID = "channel1";
     DrawerLayout drawerLayout;
-    EditText edSearch;
     MangaAdapter adapter;
     Toolbar toolbar;
     FragmentManager manager;
     ActionBarDrawerToggle toggle;
     TruyenDAO truyenDAO;
     ArrayList<Manga> list;
-    private SearchView searchView;
+    DatLichDAO datLichDAO;
+    List<Manga> listThongBao;
+    SimpleDateFormat sdf = new SimpleDateFormat("dd");
+    private NotificationManagerCompat notificationManagerCompat;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         truyenDAO = new TruyenDAO(getApplicationContext());
+        datLichDAO = new DatLichDAO(getApplicationContext());
         list = truyenDAO.getAll();
-        adapter = new MangaAdapter(getApplicationContext(),0,list);
+        adapter = new MangaAdapter(getApplicationContext(), 0, list);
         drawerLayout = findViewById(R.id.drawerlayout);
         toolbar = findViewById(R.id.toolBar);
 
@@ -67,6 +65,21 @@ public class MainActivity extends AppCompatActivity {
                 R.string.nav_drawer_open, R.string.nav_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
+        listThongBao = new ArrayList<>();
+        listThongBao = datLichDAO.getAll();
+        this.notificationManagerCompat = NotificationManagerCompat.from(this);
+
+        for (int i = 0; i < listThongBao.size(); i++) {
+            String thoiGian = listThongBao.get(i).getNgay();
+            String ten = listThongBao.get(i).getTenTruyen();
+            if (thoiGian.equalsIgnoreCase("30")) {
+//                senOnChanel1(ten);
+                startServices();
+
+            }
+        }
+
 
         setTitle("Truyện tranh");
         manager = getSupportFragmentManager();
@@ -108,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
                             .commit();
                     break;
                 case R.id.nav_danh_sach_dat_lich:
-                    setTitle("Thông báo");
+                    setTitle("What's New");
                     FragmentDanhSachDatLich fragmentDanhSachDatLich = new FragmentDanhSachDatLich();
                     manager.beginTransaction()
                             .replace(R.id.flContent, fragmentDanhSachDatLich)
@@ -122,6 +135,39 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void senOnChanel1(String ten) {
+        String title = "Thông báo";
+        String message = ten + " đã ra chapter mới";
+
+//        Notification notification = new NotificationCompat.Builder(this, appNotification.CHANNEL_ID)
+//                .setSmallIcon(R.drawable.ic_baseline_notifications_24)
+//                .setContentTitle(title)
+//                .setContentText(message)
+//                .setPriority(NotificationCompat.PRIORITY_HIGH)
+//                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+//                .build();
+
+
+//        int notificationId = 1;
+//        this.notificationManagerCompat.notify(notificationId, notification);
+    }
+
+    public void startServices() {
+        String name = "Bạn có chapter mới";
+        Intent intent = new Intent(this, MyService.class);
+        intent.putExtra("name", name);
+        startService(intent);
+    }
+
+    public void stopServices() {
+        Intent intent = new Intent(this, MyService.class);
+        stopService(intent);
+    }
+
+    private String getNow() {
+        return sdf.format(Calendar.getInstance().getTime());
+    }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
@@ -130,11 +176,12 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-    public void replaceFragment(Manga manga){
+
+    public void replaceFragment(Manga manga) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         InfoMangaFragment infoMangaFragment = new InfoMangaFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable("obj_manga",manga);
+        bundle.putSerializable("obj_manga", manga);
         infoMangaFragment.setArguments(bundle);
         transaction.replace(R.id.flContent, infoMangaFragment)
                 .addToBackStack(null);
@@ -143,17 +190,19 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-    public void readManga(Chapter chapter){
+
+    public void readManga(Chapter chapter) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         ReadMangaFragment readMangaFragment = new ReadMangaFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable("obj_chapter",chapter);
+        bundle.putSerializable("obj_chapter", chapter);
         readMangaFragment.setArguments(bundle);
         transaction.replace(R.id.flContent, readMangaFragment)
                 .addToBackStack(null);
         transaction.commit();
         setTitle(chapter.getTenChap());
     }
+
 
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {

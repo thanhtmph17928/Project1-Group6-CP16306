@@ -21,6 +21,13 @@ public class Chapter implements Serializable {
         this.link = link;
     }
 
+    public Chapter(JSONObject o) throws JSONException {
+        id = o.getString("id");
+        tenChap = o.getString("tenChap");
+        idTruyen = o.getString("idTruyen");
+        link = o.getString("link");
+    }
+
     public String getId() {
         return id;
     }
@@ -51,11 +58,5 @@ public class Chapter implements Serializable {
 
     public void setLink(String link) {
         this.link = link;
-    }
-    public Chapter(JSONObject o) throws JSONException {
-        id = o.getString("id");
-        tenChap = o.getString("tenChap");
-        idTruyen = o.getString("idTruyen");
-        link = o.getString("link");
     }
 }

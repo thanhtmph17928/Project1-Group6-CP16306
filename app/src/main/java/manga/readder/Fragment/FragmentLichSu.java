@@ -1,22 +1,18 @@
 package manga.readder.Fragment;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
-import android.widget.ListView;
+
+import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 
 import manga.readder.Activity.MainActivity;
 import manga.readder.Adapter.LichSuAdapter;
-import manga.readder.Adapter.YeuThichAdapter;
 import manga.readder.DB.LichSuDAO;
-import manga.readder.DB.YeuThichDAO;
 import manga.readder.Model.LichSu;
 import manga.readder.Model.Manga;
 import manga.readder.R;
@@ -33,27 +29,37 @@ public class FragmentLichSu extends Fragment {
     LichSuDAO lichSuDAO;
     String thoiGian;
     ArrayList<String> listThoiGian;
+    View view;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_lich_su, container, false);
+        view = inflater.inflate(R.layout.fragment_lich_su, container, false);
 
+
+        init();
+        mapping();
+        updateView();
+        setClick();
+        return view;
+    }
+
+    private void init() {
         lichSuDAO = new LichSuDAO(getContext());
-        lichSuArrayList = new ArrayList<>();
         mangaArrayList = new ArrayList<>();
         listThoiGian = new ArrayList<>();
-
         mMainActivity = (MainActivity) getActivity();
-        gridView = view.findViewById(R.id.gvManga);
         lichSuArrayList = (ArrayList<LichSu>) lichSuDAO.getAll();
+    }
 
-        for (int i = 0;i<lichSuArrayList.size();i++){
+    private void mapping() {
+        gridView = view.findViewById(R.id.gvManga);
+
+        for (int i = 0; i < lichSuArrayList.size(); i++) {
             lichSu = lichSuArrayList.get(i);
-
             thoiGian = String.valueOf(lichSu.getThoiGian());
             listThoiGian.add(thoiGian);
-
             manga = new Manga();
             manga.setId(lichSu.getId());
             manga.setTenTruyen(lichSu.getTenTruyen());
@@ -65,15 +71,18 @@ public class FragmentLichSu extends Fragment {
             manga.setNgay(lichSu.getNgay());
             manga.setSoChap(lichSu.getSoChap());
             mangaArrayList.add(manga);
-
-
         }
-        adapter = new LichSuAdapter(getActivity(), 0, mangaArrayList,listThoiGian);
-        gridView.setAdapter(adapter);
+    }
+
+    private void setClick() {
         gridView.setOnItemClickListener((parent, view1, position, id) -> {
             manga = mangaArrayList.get(position);
             mMainActivity.replaceFragment(manga);
         });
-        return view;
+    }
+
+    private void updateView() {
+        adapter = new LichSuAdapter(getActivity(), 0, mangaArrayList, listThoiGian);
+        gridView.setAdapter(adapter);
     }
 }
