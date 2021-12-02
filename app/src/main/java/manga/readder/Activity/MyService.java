@@ -20,15 +20,14 @@ public class MyService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        String title = "Thông báo";
-        String message = " đã ra chapter mới";
+        String title = "Truyện mới đỉnh của chóp :>>";
         String name = intent.getStringExtra("name");
         Intent intent1 = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent1, 0);
         Notification notification = new NotificationCompat.Builder(this, appNotification.CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notif)
                 .setContentTitle(title)
-                .setContentText(message)
+                .setContentText(name)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                 .setContentIntent(pendingIntent)

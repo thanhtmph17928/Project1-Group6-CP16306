@@ -51,7 +51,6 @@ public class FragmentManga extends Fragment implements GetManga {
         view = inflater.inflate(R.layout.fragment_manga, container, false);
 
 
-
         init();
         mapping();
         new APIGetManga(this).execute();
@@ -60,16 +59,19 @@ public class FragmentManga extends Fragment implements GetManga {
 
         return view;
     }
-    private void init(){
+
+    private void init() {
         lichSuDAO = new LichSuDAO(getContext());
         list = new ArrayList<>();
         mMainActivity = (MainActivity) getActivity();
     }
-    private void mapping(){
+
+    private void mapping() {
         gridView = view.findViewById(R.id.gvManga);
         edSearch = view.findViewById(R.id.edSearch);
     }
-    private void setClick(){
+
+    private void setClick() {
         gridView.setOnItemClickListener((parent, view1, position, id) -> {
             manga = list.get(position);
             mMainActivity.replaceFragment(manga);
@@ -105,7 +107,8 @@ public class FragmentManga extends Fragment implements GetManga {
             }
         });
     }
-    private void updateView(){
+
+    private void updateView() {
         adapter = new MangaAdapter(getContext(), 0, list);
         gridView.setAdapter(adapter);
     }

@@ -62,13 +62,16 @@ public class FragmentDanhSachDatLich extends Fragment {
         setClick();
         return view;
     }
-    private void init(){
+
+    private void init() {
 
     }
-    private void mapping(){
+
+    private void mapping() {
 
     }
-    private void setClick(){
+
+    private void setClick() {
 
     }
 

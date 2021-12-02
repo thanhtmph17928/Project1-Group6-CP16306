@@ -6,13 +6,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DbHelper extends SQLiteOpenHelper {
     final String createTableYeuThich =
-            "create table YeuThich (idYeuThich TEXT  PRIMARY KEY , tenTruyen TEXT , anh TEXT, nguon TEXT, tacGia TEXT, theLoai TEXT, soChap TEXT, ngay TEXT, luotXem INTERGER )";
+            "create table YeuThich (idYeuThich TEXT  PRIMARY KEY , tenTruyen TEXT , anh TEXT, nguon TEXT, tacGia TEXT, theLoai TEXT, soChap TEXT, ngay TEXT, luotXem INTEGER )";
     final String createTableDatLich =
-            "create table DatLich (idDatLich TEXT  PRIMARY KEY , tenTruyen TEXT , anh TEXT, nguon TEXT, tacGia TEXT, theLoai TEXT, soChap TEXT, ngay TEXT, luotXem INTERGER )";
+            "create table DatLich (idDatLich TEXT  PRIMARY KEY , tenTruyen TEXT , anh TEXT, nguon TEXT, tacGia TEXT, theLoai TEXT, soChap TEXT, ngay TEXT, luotXem INTEGER )";
     final String createTableLichSu =
-            "create table LichSu(id INTEGER PRIMARY KEY AUTOINCREMENT ,idLichSu TEXT  , tenTruyen TEXT , anh TEXT, nguon TEXT, tacGia TEXT, theLoai TEXT, soChap TEXT, ngay TEXT, luotXem INTERGER ,thoiGian DATE)";
+            "create table LichSu(id INTEGER PRIMARY KEY AUTOINCREMENT ,idLichSu TEXT  , tenTruyen TEXT , anh TEXT, nguon TEXT, tacGia TEXT, theLoai TEXT, soChap TEXT, ngay TEXT, luotXem INTEGER ,thoiGian DATE)";
     final String createTableTruyen =
-            "create table Truyen (id TEXT  PRIMARY KEY , tenTruyen TEXT , anh TEXT, nguon TEXT, tacGia TEXT, theLoai TEXT, soChap TEXT, ngay TEXT, luotXem INTERGER )";
+            "create table Truyen (id TEXT  PRIMARY KEY , tenTruyen TEXT , anh TEXT, nguon TEXT, tacGia TEXT, theLoai TEXT, soChap TEXT, ngay TEXT, luotXem INTEGER )";
 
     final String dropTableTruyen = "drop table if exists Truyen";
     final String dropTableLYeuThich = "drop table if exists YeuThich";
@@ -29,6 +29,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(createTableLichSu);
         db.execSQL(createTableTruyen);
         db.execSQL(createTableDatLich);
+
     }
 
     @Override

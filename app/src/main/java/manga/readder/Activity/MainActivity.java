@@ -36,7 +36,7 @@ import manga.readder.Model.Manga;
 import manga.readder.R;
 
 public class MainActivity extends AppCompatActivity {
-    public static final String CHANNEL_1_ID = "channel1";
+
     DrawerLayout drawerLayout;
     MangaAdapter adapter;
     Toolbar toolbar;
@@ -66,17 +66,14 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        listThongBao = new ArrayList<>();
         listThongBao = datLichDAO.getAll();
         this.notificationManagerCompat = NotificationManagerCompat.from(this);
 
         for (int i = 0; i < listThongBao.size(); i++) {
             String thoiGian = listThongBao.get(i).getNgay();
             String ten = listThongBao.get(i).getTenTruyen();
-            if (thoiGian.equalsIgnoreCase("30")) {
-//                senOnChanel1(ten);
-                startServices();
-
+            if (thoiGian.equalsIgnoreCase(getNow())) {
+                startServices(ten);
             }
         }
 
@@ -135,25 +132,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void senOnChanel1(String ten) {
-        String title = "Thông báo";
-        String message = ten + " đã ra chapter mới";
 
-//        Notification notification = new NotificationCompat.Builder(this, appNotification.CHANNEL_ID)
-//                .setSmallIcon(R.drawable.ic_baseline_notifications_24)
-//                .setContentTitle(title)
-//                .setContentText(message)
-//                .setPriority(NotificationCompat.PRIORITY_HIGH)
-//                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-//                .build();
-
-
-//        int notificationId = 1;
-//        this.notificationManagerCompat.notify(notificationId, notification);
-    }
-
-    public void startServices() {
-        String name = "Bạn có chapter mới";
+    public void startServices(String ten) {
+        String name = ten + " vừa ra chapter mới";
         Intent intent = new Intent(this, MyService.class);
         intent.putExtra("name", name);
         startService(intent);

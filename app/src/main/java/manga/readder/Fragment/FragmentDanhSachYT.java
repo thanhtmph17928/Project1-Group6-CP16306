@@ -34,7 +34,7 @@ public class FragmentDanhSachYT extends Fragment {
         View view = inflater.inflate(R.layout.fragment_danh_sach_y_t, container, false);
 
         yeuThichDAO = new YeuThichDAO(getContext());
-        datLichDAO   = new DatLichDAO(getContext());
+        datLichDAO = new DatLichDAO(getContext());
         list = new ArrayList<>();
 
         mMainActivity = (MainActivity) getActivity();
@@ -52,13 +52,16 @@ public class FragmentDanhSachYT extends Fragment {
         setClick();
         return view;
     }
-    private void init(){
+
+    private void init() {
 
     }
-    private void mapping(){
+
+    private void mapping() {
 
     }
-    private void setClick(){
+
+    private void setClick() {
 
     }
 
@@ -71,6 +74,7 @@ public class FragmentDanhSachYT extends Fragment {
         yeuThichDAO.insert(manga);
 
     }
+
     public void xoa1(final String id) {
         datLichDAO.delete(id);
 

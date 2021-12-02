@@ -76,8 +76,6 @@ public class DatLichDAO {
         }
         return check;
     }
-
-
 }
 
 
